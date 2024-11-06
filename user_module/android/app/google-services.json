@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "77768238495",
+    "project_id": "e-tutor-1a04b",
+    "storage_bucket": "e-tutor-1a04b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77768238495:android:fde5b3a3f2427878b909aa",
+        "android_client_info": {
+          "package_name": "com.etutor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtgEfM98zVcQSRsvA3JxT-vsUl066PFT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
