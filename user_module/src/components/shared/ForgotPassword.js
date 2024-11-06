@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   useColorScheme,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, FONTS} from '../constants/Constants';
 import {useNavigation} from '@react-navigation/native';
 import CustomModal from '../utils/Modals/CustomModal';
@@ -103,8 +103,8 @@ const ForgotPassword = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('Auth')}>
-          <Feather
-            name="chevron-left"
+          <Ionicons
+            name="chevron-back"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />

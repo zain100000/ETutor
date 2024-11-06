@@ -12,7 +12,7 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS} from '../constants/Constants';
 import CustomModal from '../utils/Modals/CustomModal';
@@ -221,8 +221,8 @@ const Signup = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('Login')}>
-          <Feather
-            name="chevron-left"
+          <Ionicons
+            name="chevron-back"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />
@@ -333,7 +333,7 @@ const Signup = () => {
               <TouchableOpacity
                 style={styles.eyeIconContainer}
                 onPress={() => setHidePassword(!hidePassword)}>
-                <Feather
+                <Ionicons
                   name={hidePassword ? 'eye-off' : 'eye'}
                   size={25}
                   color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}

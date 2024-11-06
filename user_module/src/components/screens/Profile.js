@@ -11,9 +11,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import imgPlaceHolder from '../../assets/placeholders/default-avatar.png';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -113,8 +111,8 @@ const Profile = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('')}>
-          <Feather
-            name="chevron-left"
+          <Ionicons
+            name="chevron-back"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />
@@ -185,8 +183,8 @@ const Profile = () => {
               <View style={styles.subCardContainer}>
                 <View style={styles.subCardLeftContainer}>
                   <View style={styles.subCardIconContainer}>
-                    <FontAwesome
-                      name="gear"
+                    <Ionicons
+                      name="cog-outline"
                       size={25}
                       style={[
                         styles.subCardIcon,
@@ -216,8 +214,8 @@ const Profile = () => {
                   <View style={styles.subCardIconContainer}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Edit_Profile')}>
-                      <Feather
-                        name="chevron-right"
+                      <Ionicons
+                        name="chevron-forward"
                         size={30}
                         color={COLORS.primary}
                       />
@@ -238,8 +236,8 @@ const Profile = () => {
               <View style={styles.subCardContainer}>
                 <View style={styles.subCardLeftContainer}>
                   <View style={styles.subCardIconContainer}>
-                    <FontAwesome
-                      name="heart"
+                    <Ionicons
+                      name="heart-outline"
                       size={25}
                       style={[
                         styles.subCardIcon,
@@ -269,8 +267,8 @@ const Profile = () => {
                   <View style={styles.subCardIconContainer}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Favourites')}>
-                      <Feather
-                        name="chevron-right"
+                      <Ionicons
+                        name="chevron-forward"
                         size={30}
                         color={COLORS.primary}
                       />
@@ -308,8 +306,8 @@ const Profile = () => {
                   <View style={styles.subCardContainer}>
                     <View style={styles.subCardLeftContainer}>
                       <View style={styles.subCardIconContainer}>
-                        <Feather
-                          name="eye"
+                        <Ionicons
+                          name="eye-outline"
                           size={25}
                           style={[
                             styles.subCardIcon,
@@ -343,8 +341,8 @@ const Profile = () => {
                           onPress={() =>
                             navigation.navigate('My_Tutor_Profile')
                           }>
-                          <Feather
-                            name="chevron-right"
+                          <Ionicons
+                            name="chevron-forward"
                             size={30}
                             color={COLORS.primary}
                           />
@@ -367,8 +365,8 @@ const Profile = () => {
                   <View style={styles.subCardContainer}>
                     <View style={styles.subCardLeftContainer}>
                       <View style={styles.subCardIconContainer}>
-                        <FontAwesome
-                          name="pencil"
+                        <Ionicons
+                          name="pencil-outline"
                           size={25}
                           style={[
                             styles.subCardIcon,
@@ -402,8 +400,8 @@ const Profile = () => {
                           onPress={() =>
                             navigation.navigate('Edit_Tutor_Profile')
                           }>
-                          <Feather
-                            name="chevron-right"
+                          <Ionicons
+                            name="chevron-forward"
                             size={30}
                             color={COLORS.primary}
                           />
@@ -443,7 +441,7 @@ const Profile = () => {
                       <View style={styles.subCardContainer}>
                         <View style={styles.subCardLeftContainer}>
                           <View style={styles.subCardIconContainer}>
-                            <Feather
+                            <Ionicons
                               name="user"
                               size={25}
                               style={[
@@ -478,8 +476,8 @@ const Profile = () => {
                               onPress={() =>
                                 navigation.navigate('Tutor_Profile')
                               }>
-                              <Feather
-                                name="chevron-right"
+                              <Ionicons
+                                name="chevron-forward"
                                 size={30}
                                 color={COLORS.primary}
                               />
@@ -518,8 +516,8 @@ const Profile = () => {
                 <View style={styles.subCardContainer}>
                   <View style={styles.subCardLeftContainer}>
                     <View style={styles.subCardIconContainer}>
-                      <Feather
-                        name="info"
+                      <Ionicons
+                        name="information-circle-outline"
                         size={25}
                         style={[
                           styles.subCardIcon,
@@ -549,8 +547,8 @@ const Profile = () => {
                     <View style={styles.subCardIconContainer}>
                       <TouchableOpacity
                         onPress={() => navigation.navigate('About')}>
-                        <Feather
-                          name="chevron-right"
+                        <Ionicons
+                          name="chevron-forward"
                           size={30}
                           color={COLORS.primary}
                         />
@@ -571,8 +569,8 @@ const Profile = () => {
                 <View style={styles.subCardContainer}>
                   <View style={styles.subCardLeftContainer}>
                     <View style={styles.subCardIconContainer}>
-                      <MaterialIcons
-                        name="policy"
+                      <Ionicons
+                        name="shield-outline"
                         size={25}
                         style={[
                           styles.subCardIcon,
@@ -602,8 +600,8 @@ const Profile = () => {
                     <View style={styles.subCardIconContainer}>
                       <TouchableOpacity
                         onPress={() => navigation.navigate('Privacy_Policy')}>
-                        <Feather
-                          name="chevron-right"
+                        <Ionicons
+                          name="chevron-forward"
                           size={30}
                           color={COLORS.primary}
                         />
@@ -624,8 +622,8 @@ const Profile = () => {
                 <View style={styles.subCardContainer}>
                   <View style={styles.subCardLeftContainer}>
                     <View style={styles.subCardIconContainer}>
-                      <MaterialIcons
-                        name="gavel"
+                      <Ionicons
+                        name="briefcase-outline"
                         size={25}
                         style={[
                           styles.subCardIcon,
@@ -657,8 +655,8 @@ const Profile = () => {
                         onPress={() =>
                           navigation.navigate('Terms_and_Conditions')
                         }>
-                        <Feather
-                          name="chevron-right"
+                        <Ionicons
+                          name="chevron-forward"
                           size={30}
                           color={COLORS.primary}
                         />
@@ -679,8 +677,8 @@ const Profile = () => {
                 <View style={styles.subCardContainer}>
                   <View style={styles.subCardLeftContainer}>
                     <View style={styles.subCardIconContainer}>
-                      <MaterialIcons
-                        name="logout"
+                      <Ionicons
+                        name="log-out-outline"
                         size={25}
                         style={[
                           styles.subCardIcon,
@@ -709,8 +707,8 @@ const Profile = () => {
                   <View style={styles.subCardRightContainer}>
                     <View style={styles.subCardIconContainer}>
                       <TouchableOpacity onPress={handleLogoutModal}>
-                        <Feather
-                          name="chevron-right"
+                        <Ionicons
+                          name="chevron-forward"
                           size={30}
                           color={COLORS.primary}
                         />
@@ -748,7 +746,7 @@ const Profile = () => {
                     <View style={styles.subCardContainer}>
                       <View style={styles.subCardLeftContainer}>
                         <View style={styles.subCardIconContainer}>
-                          <Feather
+                          <Ionicons
                             name="user"
                             size={25}
                             style={[
@@ -783,8 +781,8 @@ const Profile = () => {
                             onPress={() =>
                               navigation.navigate('Tutor_Profile')
                             }>
-                            <Feather
-                              name="chevron-right"
+                            <Ionicons
+                              name="chevron-forward"
                               size={30}
                               color={COLORS.primary}
                             />

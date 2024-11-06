@@ -16,7 +16,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {COLORS, FONTS} from '../constants/Constants';
 import imgPlaceHolder from '../../assets/placeholders/default-avatar.png';
-import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const {width, height} = Dimensions.get('window');
 
@@ -116,7 +116,7 @@ const Home = () => {
               styles.searchBarContainer,
               {borderColor: searchBorderColor},
             ]}>
-            <Feather
+            <Ionicons
               name="search"
               size={width * 0.045}
               color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
