@@ -12,12 +12,9 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {COLORS, FONTS} from '../../../constants/Constants';
 import imgPlaceHolder from '../../../../assets/placeholders/default-avatar.png';
 import firebase from '@react-native-firebase/app';
@@ -37,52 +34,52 @@ const TutorProfile = () => {
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
   const [education, setEducation] = useState('');
-  const [selectedTuitionLanguage, setSelectedTuitionLanguage] = useState({
-    urdu: false,
-    english: false,
+  const [tuitionLanguage, setTuitionLanguage] = useState({
+    urdu: '',
+    english: '',
   });
 
-  const [selectedTuitionType, setSelectedTuitionType] = useState({
-    online: false,
-    offline: false,
+  const [tuitionType, setTuitionType] = useState({
+    online: '',
+    offline: '',
   });
 
-  const [selectedSyllabusType, setSelectedSyllabusType] = useState({
-    bise: false,
-    cambridge: false,
+  const [syllabusType, setSyllabusType] = useState({
+    bise: '',
+    cambridge: '',
   });
 
-  const [selectedBoardRegions, setSelectedBoardRegions] = useState({
-    federal: false,
-    punjab: false,
-    sindh: false,
-    kpk: false,
-    azadKashmir: false,
-    balochistan: false,
+  const [boardRegions, setBoardRegions] = useState({
+    federal: '',
+    punjab: '',
+    sindh: '',
+    kpk: '',
+    azadKashmir: '',
+    balochistan: '',
   });
 
-  const [selectedTuitionGrades, setSelectedTuitionGrades] = useState({
-    playGroup: false,
-    primary: false,
-    middle: false,
-    high: false,
-    intermediate: false,
-    oLevel: false,
-    aLevel: false,
-    allGrades: false,
+  const [tuitionGrades, setTuitionGrades] = useState({
+    playGroup: '',
+    primary: '',
+    middle: '',
+    high: '',
+    intermediate: '',
+    oLevel: '',
+    aLevel: '',
+    allGrades: '',
   });
 
-  const [selectedTuitionSubjects, setSelectedTuitionSubjects] = useState({
-    math: false,
-    science: false,
-    holyQuran: false,
-    physics: false,
-    chemistry: false,
-    biology: false,
-    computerScience: false,
-    english: false,
-    allScienceSubjects: false,
-    artSubjects: false,
+  const [tuitionSubjects, setTuitionSubjects] = useState({
+    math: '',
+    science: '',
+    holyQuran: '',
+    physics: '',
+    chemistry: '',
+    biology: '',
+    computerScience: '',
+    english: '',
+    allScienceSubjects: '',
+    artSubjects: '',
   });
 
   const [tuitionFee, setTuitionFee] = useState('');
@@ -98,76 +95,6 @@ const TutorProfile = () => {
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
   const authInstance = auth();
-
-  const renderCheckbox = (label, isSelected, onPress) => (
-    <View style={styles.optionRow}>
-      <TouchableOpacity onPress={onPress} style={styles.checkboxContainer}>
-        <View style={styles.checkbox}>
-          {isSelected && <Text style={styles.checkmark}>&#10003;</Text>}
-        </View>
-      </TouchableOpacity>
-      <View style={styles.optionTextContainer}>
-        <Text
-          style={[
-            styles.optionText,
-            {color: colorScheme === 'dark' ? COLORS.white : COLORS.dark},
-          ]}>
-          {label}
-        </Text>
-      </View>
-    </View>
-  );
-
-  const handleSyllabusToggle = type => {
-    setSelectedSyllabusType(prev => {
-      const newState = {...prev, [type]: !prev[type]};
-
-      if (type === 'cambridge') {
-        setShowBoardRegions(false);
-      } else {
-        setShowBoardRegions(true);
-      }
-
-      if (!newState.bise && !newState.cambridge) {
-        setShowBoardRegions(false);
-      }
-
-      return newState;
-    });
-  };
-
-  const handleBoardRegionChange = region => {
-    setSelectedBoardRegions(prev => {
-      const updated = {
-        federal: false,
-        punjab: false,
-        sindh: false,
-        kpk: false,
-        azadKashmir: false,
-        balochistan: false,
-        [region]: true,
-      };
-      return updated;
-    });
-  };
-
-  const handleTuitionGradesChange = grade => {
-    setSelectedTuitionGrades(prev => {
-      const updated = {...prev, [grade]: !prev[grade]};
-      return {
-        ...updated,
-      };
-    });
-  };
-
-  const handleTuitionSubjectsChange = subject => {
-    setSelectedTuitionSubjects(prev => {
-      const updated = {...prev, [subject]: !prev[subject]};
-      return {
-        ...updated,
-      };
-    });
-  };
 
   const fetchUserData = async () => {
     const user = authInstance.currentUser;
@@ -202,6 +129,76 @@ const TutorProfile = () => {
       loadData();
     }, []),
   );
+
+  const renderCheckbox = (label, isSelected, onPress) => (
+    <View style={styles.optionRow}>
+      <TouchableOpacity onPress={onPress} style={styles.checkboxContainer}>
+        <View style={styles.checkbox}>
+          {isSelected && <Text style={styles.checkmark}>&#10003;</Text>}
+        </View>
+      </TouchableOpacity>
+      <View style={styles.optionTextContainer}>
+        <Text
+          style={[
+            styles.optionText,
+            {color: colorScheme === 'dark' ? COLORS.white : COLORS.dark},
+          ]}>
+          {label}
+        </Text>
+      </View>
+    </View>
+  );
+
+  const handleSyllabusToggle = type => {
+    setSyllabusType(prev => {
+      const newState = {...prev, [type]: !prev[type]};
+
+      if (type === 'cambridge') {
+        setShowBoardRegions(false);
+      } else {
+        setShowBoardRegions(true);
+      }
+
+      if (!newState.bise && !newState.cambridge) {
+        setShowBoardRegions(false);
+      }
+
+      return newState;
+    });
+  };
+
+  const handleBoardRegionChange = region => {
+    setBoardRegions(prev => {
+      const updated = {
+        federal,
+        punjab,
+        sindh,
+        kpk,
+        azadKashmir,
+        balochistan,
+        [region]: true,
+      };
+      return updated;
+    });
+  };
+
+  const handleTuitionGradesChange = grade => {
+    setTuitionGrades(prev => {
+      const updated = {...prev, [grade]: !prev[grade]};
+      return {
+        ...updated,
+      };
+    });
+  };
+
+  const handleTuitionSubjectsChange = subject => {
+    setTuitionSubjects(prev => {
+      const updated = {...prev, [subject]: !prev[subject]};
+      return {
+        ...updated,
+      };
+    });
+  };
 
   const handleImagePress = () => {
     setShowImageUploadModal(true);
@@ -238,21 +235,21 @@ const TutorProfile = () => {
       return;
     }
 
-    if (!selectedTuitionLanguage.urdu && !selectedTuitionLanguage.english) {
+    if (!tuitionLanguage.urdu && !tuitionLanguage.english) {
       alert('Please select at least one tuition language (Urdu or English).');
       setLoading(false);
       setShowAuthModal(false);
       return;
     }
 
-    if (!selectedTuitionType.online && !selectedTuitionType.offline) {
+    if (!tuitionType.online && !tuitionType.offline) {
       alert('Please select at least one tuition type (Online or Offline).');
       setLoading(false);
       setShowAuthModal(false);
       return;
     }
 
-    if (!selectedSyllabusType.bise && !selectedSyllabusType.cambridge) {
+    if (!syllabusType.bise && !syllabusType.cambridge) {
       alert('Please select at least one syllabus type (Bise or Cambridge).');
       setLoading(false);
       setShowAuthModal(false);
@@ -260,12 +257,12 @@ const TutorProfile = () => {
     }
 
     if (
-      !selectedBoardRegions.federal &&
-      !selectedBoardRegions.punjab &&
-      !selectedBoardRegions.sindh &&
-      !selectedBoardRegions.kpk &&
-      !selectedBoardRegions.azadKashmir &&
-      !selectedBoardRegions.balochistan
+      !boardRegions.federal &&
+      !boardRegions.punjab &&
+      !boardRegions.sindh &&
+      !boardRegions.kpk &&
+      !boardRegions.azadKashmir &&
+      !boardRegions.balochistan
     ) {
       alert('Please select at least one board region.');
       setLoading(false);
@@ -274,14 +271,14 @@ const TutorProfile = () => {
     }
 
     if (
-      !selectedTuitionGrades.playGroup &&
-      !selectedTuitionGrades.primary &&
-      !selectedTuitionGrades.middle &&
-      !selectedTuitionGrades.high &&
-      !selectedTuitionGrades.intermediate &&
-      !selectedTuitionGrades.oLevel &&
-      !selectedTuitionGrades.aLevel &&
-      !selectedTuitionGrades.allGrades
+      !tuitionGrades.playGroup &&
+      !tuitionGrades.primary &&
+      !tuitionGrades.middle &&
+      !tuitionGrades.high &&
+      !tuitionGrades.intermediate &&
+      !tuitionGrades.oLevel &&
+      !tuitionGrades.aLevel &&
+      !tuitionGrades.allGrades
     ) {
       alert('Please select at least one tuition grade.');
       setLoading(false);
@@ -290,16 +287,16 @@ const TutorProfile = () => {
     }
 
     if (
-      !selectedTuitionSubjects.math &&
-      !selectedTuitionSubjects.science &&
-      !selectedTuitionSubjects.holyQuran &&
-      !selectedTuitionSubjects.physics &&
-      !selectedTuitionSubjects.chemistry &&
-      !selectedTuitionSubjects.biology &&
-      !selectedTuitionSubjects.computerScience &&
-      !selectedTuitionSubjects.english &&
-      !selectedTuitionSubjects.allScienceSubjects &&
-      !selectedTuitionSubjects.artSubjects
+      !tuitionSubjects.math &&
+      !tuitionSubjects.science &&
+      !tuitionSubjects.holyQuran &&
+      !tuitionSubjects.physics &&
+      !tuitionSubjects.chemistry &&
+      !tuitionSubjects.biology &&
+      !tuitionSubjects.computerScience &&
+      !tuitionSubjects.english &&
+      !tuitionSubjects.allScienceSubjects &&
+      !tuitionSubjects.artSubjects
     ) {
       alert('Please select at least one tuition subject.');
       setLoading(false);
@@ -313,62 +310,74 @@ const TutorProfile = () => {
 
       const tutorProfile = {
         userId: userId,
-        profileImage: photoURL || undefined,
-        fullName: fullName || undefined,
-        email: email || undefined,
-        phone: phone || undefined,
-        city: city || undefined,
-        gender: gender || undefined,
-        age: age || undefined,
-        education: education || undefined,
+        profileImage: photoURL || '',
+        fullName: fullName || '',
+        email: email || '',
+        phone: phone || '',
+        city: city || '',
+        gender: gender || '',
+        age: age || '',
+        education: education || '',
         tuitionLanguage: {
-          ...(selectedTuitionLanguage.urdu && {urdu: true}),
-          ...(selectedTuitionLanguage.english && {english: true}),
+          ...(tuitionLanguage.urdu && {urdu: tuitionLanguage.urdu}),
+          ...(tuitionLanguage.english && {english: tuitionLanguage.english}),
         },
         tuitionType: {
-          ...(selectedTuitionType.online && {online: true}),
-          ...(selectedTuitionType.offline && {offline: true}),
+          ...(tuitionType.online && {online: tuitionType.online}),
+          ...(tuitionType.offline && {offline: tuitionType.offline}),
         },
         syllabusType: {
-          ...(selectedSyllabusType.bise && {bise: true}),
-          ...(selectedSyllabusType.cambridge && {cambridge: true}),
+          ...(syllabusType.bise && {bise: syllabusType.bise}),
+          ...(syllabusType.cambridge && {cambridge: syllabusType.cambridge}),
         },
         boardRegions: {
-          ...(selectedBoardRegions.federal && {federal: true}),
-          ...(selectedBoardRegions.punjab && {punjab: true}),
-          ...(selectedBoardRegions.sindh && {sindh: true}),
-          ...(selectedBoardRegions.kpk && {kpk: true}),
-          ...(selectedBoardRegions.azadKashmir && {azadKashmir: true}),
-          ...(selectedBoardRegions.balochistan && {balochistan: true}),
+          ...(boardRegions.federal && {federal: boardRegions.federal}),
+          ...(boardRegions.punjab && {punjab: boardRegions.punjab}),
+          ...(boardRegions.sindh && {sindh: boardRegions.sindh}),
+          ...(boardRegions.kpk && {kpk: boardRegions.kpk}),
+          ...(boardRegions.azadKashmir && {
+            azadKashmir: boardRegions.azadKashmir,
+          }),
+          ...(boardRegions.balochistan && {
+            balochistan: boardRegions.balochistan,
+          }),
         },
         tuitionGrades: {
-          ...(selectedTuitionGrades.playGroup && {playGroup: true}),
-          ...(selectedTuitionGrades.primary && {primary: true}),
-          ...(selectedTuitionGrades.middle && {middle: true}),
-          ...(selectedTuitionGrades.high && {high: true}),
-          ...(selectedTuitionGrades.intermediate && {intermediate: true}),
-          ...(selectedTuitionGrades.oLevel && {oLevel: true}),
-          ...(selectedTuitionGrades.aLevel && {aLevel: true}),
-          ...(selectedTuitionGrades.allGrades && {allGrades: true}),
+          ...(tuitionGrades.playGroup && {playGroup: tuitionGrades.playGroup}),
+          ...(tuitionGrades.primary && {primary: tuitionGrades.primary}),
+          ...(tuitionGrades.middle && {middle: tuitionGrades.middle}),
+          ...(tuitionGrades.high && {high: tuitionGrades.high}),
+          ...(tuitionGrades.intermediate && {
+            intermediate: tuitionGrades.intermediate,
+          }),
+          ...(tuitionGrades.oLevel && {oLevel: tuitionGrades.oLevel}),
+          ...(tuitionGrades.aLevel && {aLevel: tuitionGrades.aLevel}),
+          ...(tuitionGrades.allGrades && {allGrades: tuitionGrades.allGrades}),
         },
         tuitionSubjects: {
-          ...(selectedTuitionSubjects.math && {math: true}),
-          ...(selectedTuitionSubjects.science && {science: true}),
-          ...(selectedTuitionSubjects.holyQuran && {holyQuran: true}),
-          ...(selectedTuitionSubjects.physics && {physics: true}),
-          ...(selectedTuitionSubjects.chemistry && {chemistry: true}),
-          ...(selectedTuitionSubjects.biology && {biology: true}),
-          ...(selectedTuitionSubjects.computerScience && {
-            computerScience: true,
+          ...(tuitionSubjects.math && {math: tuitionSubjects.math}),
+          ...(tuitionSubjects.science && {science: tuitionSubjects.science}),
+          ...(tuitionSubjects.holyQuran && {
+            holyQuran: tuitionSubjects.holyQuran,
           }),
-          ...(selectedTuitionSubjects.english && {english: true}),
-          ...(selectedTuitionSubjects.allScienceSubjects && {
-            allScienceSubjects: true,
+          ...(tuitionSubjects.physics && {physics: tuitionSubjects.physics}),
+          ...(tuitionSubjects.chemistry && {
+            chemistry: tuitionSubjects.chemistry,
           }),
-          ...(selectedTuitionSubjects.artSubjects && {artSubjects: true}),
+          ...(tuitionSubjects.biology && {biology: tuitionSubjects.biology}),
+          ...(tuitionSubjects.computerScience && {
+            computerScience: tuitionSubjects.computerScience,
+          }),
+          ...(tuitionSubjects.english && {english: tuitionSubjects.english}),
+          ...(tuitionSubjects.allScienceSubjects && {
+            allScienceSubjects: tuitionSubjects.allScienceSubjects,
+          }),
+          ...(tuitionSubjects.artSubjects && {
+            artSubjects: tuitionSubjects.artSubjects,
+          }),
         },
-        tuitionFee: tuitionFeeString,
-        teachingExperience: teachingExperience || undefined,
+        tuitionFee: tuitionFeeString || '',
+        teachingExperience: teachingExperience || '',
         createdAt: Date.now(),
       };
 
@@ -385,39 +394,12 @@ const TutorProfile = () => {
       setGender('');
       setAge('');
       setEducation('');
-      setSelectedTuitionLanguage({urdu: false, english: false});
-      setSelectedTuitionType({online: false, offline: false});
-      setSelectedSyllabusType({bise: false, cambridge: false});
-      setSelectedBoardRegions({
-        federal: false,
-        punjab: false,
-        sindh: false,
-        kpk: false,
-        azadKashmir: false,
-        balochistan: false,
-      });
-      setSelectedTuitionGrades({
-        playGroup: false,
-        primary: false,
-        middle: false,
-        high: false,
-        intermediate: false,
-        oLevel: false,
-        aLevel: false,
-        allGrades: false,
-      });
-      setSelectedTuitionSubjects({
-        math: false,
-        science: false,
-        holyQuran: false,
-        physics: false,
-        chemistry: false,
-        biology: false,
-        computerScience: false,
-        english: false,
-        allScienceSubjects: false,
-        artSubjects: false,
-      });
+      setTuitionLanguage('');
+      setTuitionType('');
+      setSyllabusType('');
+      setBoardRegions('');
+      setTuitionGrades('');
+      setTuitionSubjects('');
       setTuitionFee('');
       setTeachingExperience('');
 
@@ -459,8 +441,8 @@ const TutorProfile = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('')}>
-          <Feather
-            name="chevron-left"
+          <Ionicons
+            name="chevron-back"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />
@@ -484,519 +466,47 @@ const TutorProfile = () => {
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.cardContainer}>
-          <TouchableOpacity
-            style={styles.imgContainer}
-            onPress={handleImagePress}>
-            {newImageURL || photoURL ? (
-              <Image
-                source={{uri: newImageURL || photoURL}}
-                style={styles.image}
-              />
-            ) : (
-              <Image source={imgPlaceHolder} style={styles.image} />
-            )}
-          </TouchableOpacity>
-
-          <View style={styles.personalDetailsContainer}>
-            <View style={styles.headingLabelContainer}>
-              <Text
-                style={{
-                  color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  fontSize: width * 0.04,
-                  left: width * 0.05,
-                  fontFamily: FONTS.medium,
-                  marginBottom: height * 0.02,
-                }}>
-                Personal Details (Required)*
-              </Text>
-            </View>
-
-            <View style={styles.inputFieldContainer}>
-              <View style={styles.inputContainer}>
-                <Feather
-                  name="user"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
+      {loading ? (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator
+            size={35}
+            color={colorScheme === 'dark' ? COLORS.white : COLORS.primary}
+          />
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.cardContainer}>
+            <TouchableOpacity
+              style={styles.imgContainer}
+              onPress={handleImagePress}>
+              {newImageURL || photoURL ? (
+                <Image
+                  source={{uri: newImageURL || photoURL}}
+                  style={styles.image}
                 />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Full Name *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={fullName || ''}
-                  onChangeText={e => setFullName(e)}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Feather
-                  name="mail"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Email *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={email || ''}
-                  editable={false}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Feather
-                  name="phone"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  keyboardType="phone-pad"
-                  placeholder="Phone Number *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={phone || ''}
-                  editable={false}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <FontAwesome
-                  name="building"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="City *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={city || ''}
-                  onChangeText={e => setCity(e)}
-                />
-              </View>
-
-              <View style={styles.pickerContainer}>
-                <MaterialIcons
-                  name="male"
-                  size={25}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.icon}
-                />
-                <Picker
-                  selectedValue={gender}
-                  style={[
-                    styles.picker,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  onValueChange={e => setGender(e)}>
-                  <Picker.Item label="Select Gender *" value="" />
-                  <Picker.Item label="Male" value="Male" />
-                  <Picker.Item label="Female" value="Female" />
-                </Picker>
-              </View>
-
-              <View style={styles.inputContainer}>
-                <FontAwesome
-                  name="user"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Age *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={age || ''}
-                  onChangeText={e => setAge(e)}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <FontAwesome
-                  name="building"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Highest Education *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={education || ''}
-                  onChangeText={e => setEducation(e)}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.tuitionDetailsContainer}>
-            <View style={styles.headingLabelContainer}>
-              <Text
-                style={{
-                  color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  fontSize: width * 0.04,
-                  left: width * 0.05,
-                  fontFamily: FONTS.medium,
-                  marginBottom: height * 0.02,
-                }}>
-                Tuition Details (Required)*
-              </Text>
-            </View>
-
-            <View style={styles.tuitionSubDetailsContainer}>
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Tuition Language *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  {renderCheckbox('Urdu', selectedTuitionLanguage.urdu, () => {
-                    setSelectedTuitionLanguage(prev => ({
-                      ...prev,
-                      urdu: !prev.urdu,
-                    }));
-                  })}
-                  {renderCheckbox(
-                    'English',
-                    selectedTuitionLanguage.english,
-                    () => {
-                      setSelectedTuitionLanguage(prev => ({
-                        ...prev,
-                        english: !prev.english,
-                      }));
-                    },
-                  )}
-                </View>
-              </View>
-
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Tuition Type *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  {renderCheckbox('Online', selectedTuitionType.online, () => {
-                    setSelectedTuitionType(prev => ({
-                      ...prev,
-                      online: !prev.online,
-                    }));
-                  })}
-                  {renderCheckbox(
-                    'Offline',
-                    selectedTuitionType.offline,
-                    () => {
-                      setSelectedTuitionType(prev => ({
-                        ...prev,
-                        offline: !prev.offline,
-                      }));
-                    },
-                  )}
-                </View>
-              </View>
-
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Syllabus Type *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  {renderCheckbox('Bise', selectedSyllabusType.bise, () =>
-                    handleSyllabusToggle('bise'),
-                  )}
-                  {renderCheckbox(
-                    'Cambridge',
-                    selectedSyllabusType.cambridge,
-                    () => handleSyllabusToggle('cambridge'),
-                  )}
-                </View>
-              </View>
-
-              {showBoardRegions && (
-                <View style={styles.tuitionSubCategories}>
-                  <View style={styles.subDetailTitleContainer}>
-                    <Text
-                      style={[
-                        styles.subDetailTitleText,
-                        {
-                          color:
-                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                        },
-                      ]}>
-                      Select Regions of BISE Boards *
-                    </Text>
-                  </View>
-
-                  <View style={styles.subOptionsContainer}>
-                    <View style={styles.row}>
-                      {renderCheckbox(
-                        'Federal',
-                        selectedBoardRegions.federal,
-                        () => handleBoardRegionChange('federal'),
-                      )}
-                      {renderCheckbox(
-                        'Punjab',
-                        selectedBoardRegions.punjab,
-                        () => handleBoardRegionChange('punjab'),
-                      )}
-                      {renderCheckbox('Sindh', selectedBoardRegions.sindh, () =>
-                        handleBoardRegionChange('sindh'),
-                      )}
-                    </View>
-
-                    <View style={styles.row}>
-                      {renderCheckbox('KPK', selectedBoardRegions.kpk, () =>
-                        handleBoardRegionChange('kpk'),
-                      )}
-                      {renderCheckbox(
-                        'Azad Kashmir',
-                        selectedBoardRegions.azadKashmir,
-                        () => handleBoardRegionChange('azadKashmir'),
-                      )}
-                      {renderCheckbox(
-                        'Balochistan',
-                        selectedBoardRegions.balochistan,
-                        () => handleBoardRegionChange('balochistan'),
-                      )}
-                    </View>
-                  </View>
-                </View>
+              ) : (
+                <Image source={imgPlaceHolder} style={styles.image} />
               )}
+            </TouchableOpacity>
 
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Select Tuition Grades *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  <View style={styles.row}>
-                    {renderCheckbox(
-                      'PlayGroup',
-                      selectedTuitionGrades.playGroup,
-                      () => handleTuitionGradesChange('playGroup'),
-                    )}
-
-                    {renderCheckbox(
-                      'Primary(1st-5th)',
-                      selectedTuitionGrades.primary,
-                      () => handleTuitionGradesChange('primary'),
-                    )}
-
-                    {renderCheckbox(
-                      'Middle(6th-8th)',
-                      selectedTuitionGrades.middle,
-                      () => handleTuitionGradesChange('middle'),
-                    )}
-
-                    {renderCheckbox(
-                      'High(9th-10th)',
-                      selectedTuitionGrades.high,
-                      () => handleTuitionGradesChange('high'),
-                    )}
-                  </View>
-
-                  <View style={styles.row}>
-                    {renderCheckbox(
-                      'Inter(11th-12th)',
-                      selectedTuitionGrades.intermediate,
-                      () => handleTuitionGradesChange('intermediate'),
-                    )}
-
-                    {renderCheckbox(
-                      'O-Level',
-                      selectedTuitionGrades.oLevel,
-                      () => handleTuitionGradesChange('oLevel'),
-                    )}
-
-                    {renderCheckbox(
-                      'A-Level',
-                      selectedTuitionGrades.aLevel,
-                      () => handleTuitionGradesChange('aLevel'),
-                    )}
-                    {renderCheckbox(
-                      'All Grades',
-                      selectedTuitionGrades.allGrades,
-                      () => handleTuitionGradesChange('allGrades'),
-                    )}
-                  </View>
-                </View>
+            <View style={styles.personalDetailsContainer}>
+              <View style={styles.headingLabelContainer}>
+                <Text
+                  style={{
+                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    fontSize: width * 0.04,
+                    left: width * 0.05,
+                    fontFamily: FONTS.medium,
+                    marginBottom: height * 0.02,
+                  }}>
+                  Personal Details (Required)*
+                </Text>
               </View>
 
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Select Tuition Subjects *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  <View style={styles.row}>
-                    {renderCheckbox('Maths', selectedTuitionSubjects.math, () =>
-                      handleTuitionSubjectsChange('math'),
-                    )}
-
-                    {renderCheckbox(
-                      'Science',
-                      selectedTuitionSubjects.science,
-                      () => handleTuitionSubjectsChange('science'),
-                    )}
-
-                    {renderCheckbox(
-                      'Quran',
-                      selectedTuitionSubjects.holyQuran,
-                      () => handleTuitionSubjectsChange('holyQuran'),
-                    )}
-
-                    {renderCheckbox(
-                      'Physics',
-                      selectedTuitionSubjects.physics,
-                      () => handleTuitionSubjectsChange('physics'),
-                    )}
-                  </View>
-
-                  <View style={styles.row}>
-                    {renderCheckbox(
-                      'Chemistry',
-                      selectedTuitionSubjects.chemistry,
-                      () => handleTuitionSubjectsChange('chemistry'),
-                    )}
-
-                    {renderCheckbox(
-                      'Biology',
-                      selectedTuitionSubjects.biology,
-                      () => handleTuitionSubjectsChange('biology'),
-                    )}
-
-                    {renderCheckbox(
-                      'Computer',
-                      selectedTuitionSubjects.computerScience,
-                      () => handleTuitionSubjectsChange('computerScience'),
-                    )}
-
-                    {renderCheckbox(
-                      'English',
-                      selectedTuitionSubjects.english,
-                      () => handleTuitionSubjectsChange('english'),
-                    )}
-                  </View>
-
-                  <View style={styles.row}>
-                    {renderCheckbox(
-                      'All Subjects',
-                      selectedTuitionSubjects.allScienceSubjects,
-                      () => handleTuitionSubjectsChange('allScienceSubjects'),
-                    )}
-
-                    {renderCheckbox(
-                      'Arts',
-                      selectedTuitionSubjects.artSubjects,
-                      () => handleTuitionSubjectsChange('artSubjects'),
-                    )}
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.tuitionSubCategories}>
+              <View style={styles.inputFieldContainer}>
                 <View style={styles.inputContainer}>
-                  <FontAwesome
-                    name="money"
+                  <Ionicons
+                    name="person-outline"
                     size={20}
                     color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
                     style={styles.inputIcon}
@@ -1009,20 +519,42 @@ const TutorProfile = () => {
                           colorScheme === 'dark' ? COLORS.white : COLORS.dark,
                       },
                     ]}
-                    placeholder="Tuition Fee *"
+                    placeholder="Full Name *"
                     placeholderTextColor={
                       colorScheme === 'dark' ? COLORS.white : COLORS.dark
                     }
-                    value={tuitionFee || ''}
-                    onChangeText={setTuitionFee}
+                    value={fullName || ''}
+                    onChangeText={e => setFullName(e)}
                   />
                 </View>
-              </View>
 
-              <View style={styles.tuitionSubCategories}>
                 <View style={styles.inputContainer}>
-                  <Entypo
-                    name="bar-graph"
+                  <Ionicons
+                    name="mail-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="Email *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={email || ''}
+                    editable={false}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="call-outline"
                     size={20}
                     color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
                     style={styles.inputIcon}
@@ -1036,33 +568,468 @@ const TutorProfile = () => {
                       },
                     ]}
                     keyboardType="phone-pad"
-                    placeholder="Teaching Experience *"
+                    placeholder="Phone Number *"
                     placeholderTextColor={
                       colorScheme === 'dark' ? COLORS.white : COLORS.dark
                     }
-                    value={teachingExperience || ''}
-                    onChangeText={setTeachingExperience}
+                    value={phone || ''}
+                    editable={false}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="home-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="City *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={city || ''}
+                    onChangeText={e => setCity(e)}
+                  />
+                </View>
+
+                <View style={styles.pickerContainer}>
+                  <Ionicons
+                    name="male"
+                    size={25}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.icon}
+                  />
+                  <Picker
+                    Value={gender}
+                    style={[
+                      styles.picker,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    onValueChange={e => setGender(e)}>
+                    <Picker.Item label="Select Gender *" value="" />
+                    <Picker.Item label="Male" value="Male" />
+                    <Picker.Item label="Female" value="Female" />
+                  </Picker>
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="person-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="Age *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={age || ''}
+                    onChangeText={e => setAge(e)}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="school-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="Highest Education *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={education || ''}
+                    onChangeText={e => setEducation(e)}
                   />
                 </View>
               </View>
             </View>
-          </View>
 
-          <View style={styles.btnContainer}>
-            <TouchableOpacity
-              style={[styles.createProfileBtn]}
-              onPress={handleCreateTutorProfile}>
-              <Text style={styles.createProfileText}>
-                {loading ? (
-                  <ActivityIndicator color={COLORS.white} size={25} />
-                ) : (
-                  'Create Profile'
+            <View style={styles.tuitionDetailsContainer}>
+              <View style={styles.headingLabelContainer}>
+                <Text
+                  style={{
+                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    fontSize: width * 0.04,
+                    left: width * 0.05,
+                    fontFamily: FONTS.medium,
+                    marginBottom: height * 0.02,
+                  }}>
+                  Tuition Details (Required)*
+                </Text>
+              </View>
+
+              <View style={styles.tuitionSubDetailsContainer}>
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Tuition Language *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    {renderCheckbox('Urdu', tuitionLanguage.urdu, () => {
+                      setTuitionLanguage(prev => ({
+                        ...prev,
+                        urdu: !prev.urdu,
+                      }));
+                    })}
+                    {renderCheckbox('English', tuitionLanguage.english, () => {
+                      setTuitionLanguage(prev => ({
+                        ...prev,
+                        english: !prev.english,
+                      }));
+                    })}
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Tuition Type *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    {renderCheckbox('Online', tuitionType.online, () => {
+                      setTuitionType(prev => ({
+                        ...prev,
+                        online: !prev.online,
+                      }));
+                    })}
+                    {renderCheckbox('Offline', tuitionType.offline, () => {
+                      setTuitionType(prev => ({
+                        ...prev,
+                        offline: !prev.offline,
+                      }));
+                    })}
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Syllabus Type *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    {renderCheckbox('Bise', syllabusType.bise, () =>
+                      handleSyllabusToggle('bise'),
+                    )}
+                    {renderCheckbox('Cambridge', syllabusType.cambridge, () =>
+                      handleSyllabusToggle('cambridge'),
+                    )}
+                  </View>
+                </View>
+
+                {showBoardRegions && (
+                  <View style={styles.tuitionSubCategories}>
+                    <View style={styles.subDetailTitleContainer}>
+                      <Text
+                        style={[
+                          styles.subDetailTitleText,
+                          {
+                            color:
+                              colorScheme === 'dark'
+                                ? COLORS.white
+                                : COLORS.dark,
+                          },
+                        ]}>
+                        Select Regions of BISE Boards *
+                      </Text>
+                    </View>
+
+                    <View style={styles.subOptionsContainer}>
+                      <View style={styles.row}>
+                        {renderCheckbox('Federal', boardRegions.federal, () =>
+                          handleBoardRegionChange('federal'),
+                        )}
+                        {renderCheckbox('Punjab', boardRegions.punjab, () =>
+                          handleBoardRegionChange('punjab'),
+                        )}
+                        {renderCheckbox('Sindh', boardRegions.sindh, () =>
+                          handleBoardRegionChange('sindh'),
+                        )}
+                      </View>
+
+                      <View style={styles.row}>
+                        {renderCheckbox('KPK', boardRegions.kpk, () =>
+                          handleBoardRegionChange('kpk'),
+                        )}
+                        {renderCheckbox(
+                          'Azad Kashmir',
+                          boardRegions.azadKashmir,
+                          () => handleBoardRegionChange('azadKashmir'),
+                        )}
+                        {renderCheckbox(
+                          'Balochistan',
+                          boardRegions.balochistan,
+                          () => handleBoardRegionChange('balochistan'),
+                        )}
+                      </View>
+                    </View>
+                  </View>
                 )}
-              </Text>
-            </TouchableOpacity>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Select Tuition Grades *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'PlayGroup',
+                        tuitionGrades.playGroup,
+                        () => handleTuitionGradesChange('playGroup'),
+                      )}
+
+                      {renderCheckbox(
+                        'Primary(1st-5th)',
+                        tuitionGrades.primary,
+                        () => handleTuitionGradesChange('primary'),
+                      )}
+
+                      {renderCheckbox(
+                        'Middle(6th-8th)',
+                        tuitionGrades.middle,
+                        () => handleTuitionGradesChange('middle'),
+                      )}
+
+                      {renderCheckbox(
+                        'High(9th-10th)',
+                        tuitionGrades.high,
+                        () => handleTuitionGradesChange('high'),
+                      )}
+                    </View>
+
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'Inter(11th-12th)',
+                        tuitionGrades.intermediate,
+                        () => handleTuitionGradesChange('intermediate'),
+                      )}
+
+                      {renderCheckbox('O-Level', tuitionGrades.oLevel, () =>
+                        handleTuitionGradesChange('oLevel'),
+                      )}
+
+                      {renderCheckbox('A-Level', tuitionGrades.aLevel, () =>
+                        handleTuitionGradesChange('aLevel'),
+                      )}
+                      {renderCheckbox(
+                        'All Grades',
+                        tuitionGrades.allGrades,
+                        () => handleTuitionGradesChange('allGrades'),
+                      )}
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Select Tuition Subjects *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    <View style={styles.row}>
+                      {renderCheckbox('Maths', tuitionSubjects.math, () =>
+                        handleTuitionSubjectsChange('math'),
+                      )}
+
+                      {renderCheckbox('Science', tuitionSubjects.science, () =>
+                        handleTuitionSubjectsChange('science'),
+                      )}
+
+                      {renderCheckbox('Quran', tuitionSubjects.holyQuran, () =>
+                        handleTuitionSubjectsChange('holyQuran'),
+                      )}
+
+                      {renderCheckbox('Physics', tuitionSubjects.physics, () =>
+                        handleTuitionSubjectsChange('physics'),
+                      )}
+                    </View>
+
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'Chemistry',
+                        tuitionSubjects.chemistry,
+                        () => handleTuitionSubjectsChange('chemistry'),
+                      )}
+
+                      {renderCheckbox('Biology', tuitionSubjects.biology, () =>
+                        handleTuitionSubjectsChange('biology'),
+                      )}
+
+                      {renderCheckbox(
+                        'Computer',
+                        tuitionSubjects.computerScience,
+                        () => handleTuitionSubjectsChange('computerScience'),
+                      )}
+
+                      {renderCheckbox('English', tuitionSubjects.english, () =>
+                        handleTuitionSubjectsChange('english'),
+                      )}
+                    </View>
+
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'All Subjects',
+                        tuitionSubjects.allScienceSubjects,
+                        () => handleTuitionSubjectsChange('allScienceSubjects'),
+                      )}
+
+                      {renderCheckbox('Arts', tuitionSubjects.artSubjects, () =>
+                        handleTuitionSubjectsChange('artSubjects'),
+                      )}
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.inputContainer}>
+                    <Ionicons
+                      name="cash-outline"
+                      size={20}
+                      color={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      style={styles.inputIcon}
+                    />
+                    <TextInput
+                      style={[
+                        styles.inputField,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}
+                      placeholder="Tuition Fee *"
+                      placeholderTextColor={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      value={tuitionFee || ''}
+                      onChangeText={setTuitionFee}
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.inputContainer}>
+                    <Ionicons
+                      name="school-outline"
+                      size={20}
+                      color={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      style={styles.inputIcon}
+                    />
+                    <TextInput
+                      style={[
+                        styles.inputField,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}
+                      keyboardType="phone-pad"
+                      placeholder="Teaching Experience *"
+                      placeholderTextColor={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      value={teachingExperience || ''}
+                      onChangeText={setTeachingExperience}
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={[styles.createProfileBtn]}
+                onPress={handleCreateTutorProfile}>
+                <Text style={styles.createProfileText}>
+                  {loading ? (
+                    <ActivityIndicator color={COLORS.white} size={25} />
+                  ) : (
+                    'Create Profile'
+                  )}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
 
       <ImageUploadModal
         visible={showImageUploadModal}
@@ -1118,6 +1085,12 @@ const styles = StyleSheet.create({
     paddingVertical: width * 0.05,
     borderBottomWidth: 2,
     borderBottomColor: COLORS.gray,
+  },
+
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   scrollContainer: {

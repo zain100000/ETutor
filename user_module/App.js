@@ -17,6 +17,7 @@ import About from './src/components/shared/About';
 import TutorProfile from './src/components/screens/extraScreens/Tutor/TutorProfile';
 import MyTutorProfile from './src/components/screens/extraScreens/Tutor/MyTutorProfile';
 import Profile from './src/components/screens/Profile';
+import UpdateTutorProfile from './src/components/screens/extraScreens/Tutor/UpdateTutorProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -105,6 +106,12 @@ const App = () => {
         <Stack.Screen name="My_Tutor_Profile">
           {props => (
             <MyTutorProfile {...props} setStatusBarColor={setStatusBarColor} />
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="Edit_Tutor_Profile">
+          {props => (
+            <UpdateTutorProfile {...props} setStatusBarColor={setStatusBarColor} />
           )}
         </Stack.Screen>
       </Stack.Navigator>
