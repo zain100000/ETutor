@@ -426,6 +426,7 @@ const TutorProfile = () => {
 
       setTimeout(() => {
         setShowSuccessModal(false);
+        navigation.replace('Profile');
       }, 3000);
     } catch (error) {
       setShowAuthModal(false);
