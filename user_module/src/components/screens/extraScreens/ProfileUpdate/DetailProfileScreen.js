@@ -12,7 +12,7 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS} from '../../../constants/Constants';
 import imgPlaceHolder from '../../../../assets/placeholders/default-avatar.png';
@@ -207,8 +207,8 @@ const DetailProfileScreen = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('')}>
-          <Feather
-            name="chevron-left"
+          <Ionicons
+            name="chevron-back"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />
@@ -232,84 +232,31 @@ const DetailProfileScreen = () => {
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.cardContainer}>
-          <TouchableOpacity
-            onPress={handleImagePress}
-            style={styles.imgContainer}>
-            {newImageURL || photoURL ? (
-              <Image
-                source={{uri: newImageURL || photoURL}}
-                style={styles.image}
-              />
-            ) : (
-              <Image source={imgPlaceHolder} style={styles.image} />
-            )}
-          </TouchableOpacity>
+      {loading ? (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator
+            size={35}
+            color={colorScheme === 'dark' ? COLORS.white : COLORS.primary}
+          />
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.cardContainer}>
+            <TouchableOpacity
+              onPress={handleImagePress}
+              style={styles.imgContainer}>
+              {newImageURL || photoURL ? (
+                <Image
+                  source={{uri: newImageURL || photoURL}}
+                  style={styles.image}
+                />
+              ) : (
+                <Image source={imgPlaceHolder} style={styles.image} />
+              )}
+            </TouchableOpacity>
 
-          <View style={styles.infoContainer}>
-            <View style={styles.nameContainer}>
-              <Text
-                style={[
-                  styles.label,
-                  {color: colorScheme === 'dark' ? COLORS.white : COLORS.dark},
-                ]}>
-                Full Name
-              </Text>
-              <TextInput
-                style={[
-                  styles.inputField,
-                  {
-                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  },
-                ]}
-                placeholder="Enter Full Name"
-                placeholderTextColor={
-                  colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                }
-                value={fullName || ''}
-                onChangeText={text => {
-                  handleFullNameChange(text);
-                  handleFieldChange();
-                }}
-              />
-              {fullNameError && fullNameError ? (
-                <Text style={styles.errorText}>{fullNameError}</Text>
-              ) : null}
-            </View>
-
-            <View style={styles.phoneContainer}>
-              <Text
-                style={[
-                  styles.label,
-                  {color: colorScheme === 'dark' ? COLORS.white : COLORS.dark},
-                ]}>
-                Phone
-              </Text>
-              <TextInput
-                style={[
-                  styles.inputField,
-                  {
-                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  },
-                ]}
-                placeholder="Enter Phone Number"
-                placeholderTextColor={
-                  colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                }
-                value={phone || ''}
-                onChangeText={text => {
-                  handlePhoneChange(text);
-                  handleFieldChange();
-                }}
-              />
-              {phoneError && phoneError ? (
-                <Text style={styles.errorText}>{phoneError}</Text>
-              ) : null}
-            </View>
-
-            <View style={styles.addressContainer}>
-              <View>
+            <View style={styles.infoContainer}>
+              <View style={styles.nameContainer}>
                 <Text
                   style={[
                     styles.label,
@@ -318,7 +265,7 @@ const DetailProfileScreen = () => {
                         colorScheme === 'dark' ? COLORS.white : COLORS.dark,
                     },
                   ]}>
-                  Address
+                  Full Name
                 </Text>
                 <TextInput
                   style={[
@@ -328,62 +275,133 @@ const DetailProfileScreen = () => {
                         colorScheme === 'dark' ? COLORS.white : COLORS.dark,
                     },
                   ]}
-                  placeholder="Enter Address"
+                  placeholder="Enter Full Name"
                   placeholderTextColor={
                     colorScheme === 'dark' ? COLORS.white : COLORS.dark
                   }
-                  value={address || ''}
+                  value={fullName || ''}
                   onChangeText={text => {
-                    handleAddressChange(text);
+                    handleFullNameChange(text);
                     handleFieldChange();
                   }}
                 />
+                {fullNameError && fullNameError ? (
+                  <Text style={styles.errorText}>{fullNameError}</Text>
+                ) : null}
               </View>
-              {addressError && addressError ? (
-                <Text style={styles.errorText}>{addressError}</Text>
-              ) : null}
+
+              <View style={styles.phoneContainer}>
+                <Text
+                  style={[
+                    styles.label,
+                    {
+                      color:
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    },
+                  ]}>
+                  Phone
+                </Text>
+                <TextInput
+                  style={[
+                    styles.inputField,
+                    {
+                      color:
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    },
+                  ]}
+                  placeholder="Enter Phone Number"
+                  placeholderTextColor={
+                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                  }
+                  value={phone || ''}
+                  onChangeText={text => {
+                    handlePhoneChange(text);
+                    handleFieldChange();
+                  }}
+                />
+                {phoneError && phoneError ? (
+                  <Text style={styles.errorText}>{phoneError}</Text>
+                ) : null}
+              </View>
+
+              <View style={styles.addressContainer}>
+                <View>
+                  <Text
+                    style={[
+                      styles.label,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    Address
+                  </Text>
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="Enter Address"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={address || ''}
+                    onChangeText={text => {
+                      handleAddressChange(text);
+                      handleFieldChange();
+                    }}
+                  />
+                </View>
+                {addressError && addressError ? (
+                  <Text style={styles.errorText}>{addressError}</Text>
+                ) : null}
+              </View>
+            </View>
+
+            <View style={styles.editButtonContainer}>
+              <TouchableOpacity
+                disabled={!isUpdateEnabled()}
+                onPress={handleUpdateProfile}>
+                <View
+                  style={[
+                    styles.editContainer,
+                    {
+                      backgroundColor: isUpdateEnabled()
+                        ? COLORS.primary
+                        : COLORS.gray,
+                    },
+                  ]}>
+                  <View style={styles.leftContainer}>
+                    {loading ? (
+                      <ActivityIndicator size={25} color={COLORS.white} />
+                    ) : (
+                      <>
+                        <View style={styles.iconContainer}>
+                          <Ionicons
+                            name="edit"
+                            size={25}
+                            color={COLORS.white}
+                            style={{bottom: 2}}
+                          />
+                        </View>
+                        <View style={styles.textContainer}>
+                          <Text
+                            style={[styles.editText, {color: COLORS.white}]}>
+                            Update
+                          </Text>
+                        </View>
+                      </>
+                    )}
+                  </View>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
-
-          <View style={styles.editButtonContainer}>
-            <TouchableOpacity
-              disabled={!isUpdateEnabled()}
-              onPress={handleUpdateProfile}>
-              <View
-                style={[
-                  styles.editContainer,
-                  {
-                    backgroundColor: isUpdateEnabled()
-                      ? COLORS.primary
-                      : COLORS.gray,
-                  },
-                ]}>
-                <View style={styles.leftContainer}>
-                  {loading ? (
-                    <ActivityIndicator size={25} color={COLORS.white} />
-                  ) : (
-                    <>
-                      <View style={styles.iconContainer}>
-                        <Feather
-                          name="edit"
-                          size={25}
-                          color={COLORS.white}
-                          style={{bottom: 2}}
-                        />
-                      </View>
-                      <View style={styles.textContainer}>
-                        <Text style={[styles.editText, {color: COLORS.white}]}>
-                          Update
-                        </Text>
-                      </View>
-                    </>
-                  )}
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
 
       <ImageUploadModal
         visible={showImageUploadModal}
@@ -431,6 +449,12 @@ const styles = StyleSheet.create({
     paddingVertical: width * 0.05,
     borderBottomWidth: 2,
     borderBottomColor: COLORS.gray,
+  },
+
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   scrollContainer: {
