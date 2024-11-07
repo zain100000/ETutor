@@ -19,6 +19,7 @@ import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {COLORS, FONTS} from '../constants/Constants';
 import CustomModal from '../utils/modals/CustomModal';
 import LogoutModal from '../utils/modals/LogoutModal';
+import DeleteTutorProfileModal from '../utils/modals/DeleteTutorProfile';
 
 const {width, height} = Dimensions.get('window');
 
@@ -26,6 +27,7 @@ const Profile = () => {
   const [image, setImage] = useState('');
   const [fullName, setFullName] = useState('');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteTutorModal, setShowDeleteTutorModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [tutorProfile, setTutorProfile] = useState(false);
@@ -91,6 +93,10 @@ const Profile = () => {
 
   const handleLogoutModal = () => {
     setShowLogoutModal(true);
+  };
+
+  const handleDeleteTutorModal = () => {
+    setShowDeleteTutorModal(true);
   };
 
   return (
@@ -400,6 +406,62 @@ const Profile = () => {
                           onPress={() =>
                             navigation.navigate('Edit_Tutor_Profile')
                           }>
+                          <Ionicons
+                            name="chevron-forward"
+                            size={30}
+                            color={COLORS.primary}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+
+                <View
+                  style={[
+                    styles.subCard,
+                    {
+                      backgroundColor:
+                        colorScheme === 'dark'
+                          ? COLORS.lightDark
+                          : COLORS.white,
+                    },
+                  ]}>
+                  <View style={styles.subCardContainer}>
+                    <View style={styles.subCardLeftContainer}>
+                      <View style={styles.subCardIconContainer}>
+                        <Ionicons
+                          name="trash-outline"
+                          size={25}
+                          style={[
+                            styles.subCardIcon,
+                            {
+                              color:
+                                colorScheme === 'dark'
+                                  ? COLORS.errorColor
+                                  : COLORS.errorColor,
+                            },
+                          ]}
+                        />
+                      </View>
+                      <View style={styles.subCardTextContainer}>
+                        <Text
+                          style={{
+                            color:
+                              colorScheme === 'dark'
+                                ? COLORS.errorColor
+                                : COLORS.errorColor,
+                            fontSize: width * 0.045,
+                            marginLeft: 10,
+                          }}>
+                          Delete Tutor Profile
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.subCardRightContainer}>
+                      <View style={styles.subCardIconContainer}>
+                        <TouchableOpacity onPress={handleDeleteTutorModal}>
                           <Ionicons
                             name="chevron-forward"
                             size={30}
@@ -797,6 +859,13 @@ const Profile = () => {
           </View>
         </ScrollView>
       )}
+
+      <DeleteTutorProfileModal
+        visible={showDeleteTutorModal}
+        onClose={() => setShowDeleteTutorModal(false)}
+        title="Delete Tutor Profile!"
+        description="Are you sure to delete your tutor profile?"
+      />
 
       <LogoutModal
         visible={showLogoutModal}
