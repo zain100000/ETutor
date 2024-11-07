@@ -32,30 +32,23 @@ const DeleteAccountModal = ({visible, title, description, onClose}) => {
 
     try {
       const user = auth().currentUser;
-      if (!user) {
-        throw new Error('No user is currently signed in');
-      }
-
-      const userRef = firestore().collection('app_users').doc(user.uid);
-
-      const deleteUserProfileImage = async () => {
-        const storageRef = storage().ref(
-          `app_users/user_profile_images/${user.uid}.jpg`,
-        );
-        try {
-          await storageRef.delete();
-        } catch (error) {
-          if (error.code !== 'storage/object-not-found') {
-            throw error;
-          }
-        }
-      };
-
-      await userRef.delete();
-
-      await deleteUserProfileImage();
+      if (!user) throw new Error('No user is currently signed in');
 
       await user.delete();
+
+      const userId = user.uid;
+      const userRef = firestore().collection('app_users').doc(userId);
+      await userRef.delete();
+
+      const tutorProfileSnapshot = await firestore()
+        .collection('tutor_profile')
+        .where('userId', '==', userId)
+        .get();
+
+      if (!tutorProfileSnapshot.empty) {
+        const tutorProfileRef = tutorProfileSnapshot.docs[0].ref;
+        await tutorProfileRef.delete();
+      }
 
       setShowSuccessModal(true);
       setTimeout(() => {

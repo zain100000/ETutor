@@ -31,9 +31,7 @@ const DeleteTutorProfileModal = ({visible, title, description, onClose}) => {
 
     try {
       const user = auth().currentUser;
-      if (!user) {
-        throw new Error('No user is currently signed in');
-      }
+      if (!user) throw new Error('No user is currently signed in');
 
       const userId = user.uid;
 
@@ -42,9 +40,7 @@ const DeleteTutorProfileModal = ({visible, title, description, onClose}) => {
         .where('userId', '==', userId)
         .get();
 
-      if (querySnapshot.empty) {
-        throw new Error('Tutor profile not found');
-      }
+      if (querySnapshot.empty) throw new Error('Tutor profile not found');
 
       const tutorProfileDoc = querySnapshot.docs[0];
       const tutorProfileRef = tutorProfileDoc.ref;

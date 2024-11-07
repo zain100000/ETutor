@@ -20,6 +20,7 @@ import {COLORS, FONTS} from '../constants/Constants';
 import CustomModal from '../utils/modals/CustomModal';
 import LogoutModal from '../utils/modals/LogoutModal';
 import DeleteTutorProfileModal from '../utils/modals/DeleteTutorProfile';
+import DeleteAccountModal from '../utils/modals/DeleteAccountModal';
 
 const {width, height} = Dimensions.get('window');
 
@@ -28,6 +29,7 @@ const Profile = () => {
   const [fullName, setFullName] = useState('');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showDeleteTutorModal, setShowDeleteTutorModal] = useState(false);
+  const [showDeleteAccountModal, setShowDeleteAccountModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [tutorProfile, setTutorProfile] = useState(false);
@@ -97,6 +99,10 @@ const Profile = () => {
 
   const handleDeleteTutorModal = () => {
     setShowDeleteTutorModal(true);
+  };
+
+  const handleDeleteAccountModal = () => {
+    setShowDeleteAccountModal(true);
   };
 
   return (
@@ -780,6 +786,60 @@ const Profile = () => {
                 </View>
               </View>
 
+              <View
+                style={[
+                  styles.subCard,
+                  {
+                    backgroundColor:
+                      colorScheme === 'dark' ? COLORS.lightDark : COLORS.white,
+                  },
+                ]}>
+                <View style={styles.subCardContainer}>
+                  <View style={styles.subCardLeftContainer}>
+                    <View style={styles.subCardIconContainer}>
+                      <Ionicons
+                        name="trash-outline"
+                        size={25}
+                        style={[
+                          styles.subCardIcon,
+                          {
+                            color:
+                              colorScheme === 'dark'
+                                ? COLORS.errorColor
+                                : COLORS.errorColor,
+                          },
+                        ]}
+                      />
+                    </View>
+                    <View style={styles.subCardTextContainer}>
+                      <Text
+                        style={{
+                          color:
+                            colorScheme === 'dark'
+                              ? COLORS.errorColor
+                              : COLORS.errorColor,
+                          fontSize: width * 0.045,
+                          marginLeft: 10,
+                        }}>
+                        Delete Account
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.subCardRightContainer}>
+                    <View style={styles.subCardIconContainer}>
+                      <TouchableOpacity onPress={handleDeleteAccountModal}>
+                        <Ionicons
+                          name="chevron-forward"
+                          size={30}
+                          color={COLORS.primary}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+
               {!tutorProfile && (
                 <>
                   <View style={styles.subHeaderTextContainer}>
@@ -860,11 +920,18 @@ const Profile = () => {
         </ScrollView>
       )}
 
+      <DeleteAccountModal
+        visible={showDeleteAccountModal}
+        onClose={() => setShowDeleteAccountModal(false)}
+        title="Delete Account!"
+        description="Are you sure to delete your account it will delete all of your data?"
+      />
+
       <DeleteTutorProfileModal
         visible={showDeleteTutorModal}
         onClose={() => setShowDeleteTutorModal(false)}
         title="Delete Tutor Profile!"
-        description="Are you sure to delete your tutor profile?"
+        description="Are you sure to delete your tutor profile it will only delete your tutor profile?"
       />
 
       <LogoutModal
