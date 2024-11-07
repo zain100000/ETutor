@@ -16,7 +16,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS} from '../constants/Constants';
-import CustomModal from '../utils/Modals/CustomModal';
+import CustomModal from '../utils/modals/CustomModal';
 import auth from '@react-native-firebase/auth';
 
 const {width, height} = Dimensions.get('window');

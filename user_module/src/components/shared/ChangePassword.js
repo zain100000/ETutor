@@ -13,7 +13,7 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS} from '../constants/Constants';
-import CustomModal from '../utils/Modals/CustomModal';
+import CustomModal from '../utils/modals/CustomModal';
 
 const {width, height} = Dimensions.get('window');
 

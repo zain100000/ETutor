@@ -17,8 +17,8 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {COLORS, FONTS} from '../constants/Constants';
-import CustomModal from '../utils/Modals/CustomModal';
-import LogoutModal from '../utils/Modals/LogoutModal';
+import CustomModal from '../utils/modals/CustomModal';
+import LogoutModal from '../utils/modals/LogoutModal';
 
 const {width, height} = Dimensions.get('window');
 
@@ -747,7 +747,7 @@ const Profile = () => {
                       <View style={styles.subCardLeftContainer}>
                         <View style={styles.subCardIconContainer}>
                           <Ionicons
-                            name="user"
+                            name="school-outline"
                             size={25}
                             style={[
                               styles.subCardIcon,

@@ -23,8 +23,8 @@ import imgPlaceHolder from '../../../../assets/placeholders/default-avatar.png';
 import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import CustomModal from '../../../utils/Modals/CustomModal';
-import ImageUploadModal from '../../../utils/Modals/ImageUploadModal';
+import CustomModal from '../../../utils/modals/CustomModal';
+import ImageUploadModal from '../../../utils/modals/ImageUploadModal';
 
 const {width, height} = Dimensions.get('window');
 

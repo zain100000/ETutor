@@ -16,8 +16,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS} from '../../../constants/Constants';
 import imgPlaceHolder from '../../../../assets/placeholders/default-avatar.png';
-import CustomModal from '../../../utils/Modals/CustomModal';
-import ImageUploadModal from '../../../utils/Modals/ImageUploadModal';
+import CustomModal from '../../../utils/modals/CustomModal';
+import ImageUploadModal from '../../../utils/modals/ImageUploadModal';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
