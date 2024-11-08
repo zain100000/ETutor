@@ -30,49 +30,49 @@ const TutorProfile = () => {
   const [city, setCity] = useState('');
   const [gender, setGender] = useState('');
   const [tuitionLanguage, setTuitionLanguage] = useState({
-    urdu: false,
-    english: false,
+    urdu: '',
+    english: '',
   });
   const [tuitionType, setTuitionType] = useState({
-    online: false,
-    offline: false,
+    online: '',
+    offline: '',
   });
   const [syllabusType, setSyllabusType] = useState({
-    bise: false,
-    cambridge: false,
+    bise: '',
+    cambridge: '',
   });
 
   const [boardRegions, setBoardRegions] = useState({
-    federal: false,
-    punjab: false,
-    sindh: false,
-    kpk: false,
-    azadKashmir: false,
-    balochistan: false,
+    federal: '',
+    punjab: '',
+    sindh: '',
+    kpk: '',
+    azadKashmir: '',
+    balochistan: '',
   });
 
   const [tuitionGrades, setTuitionGrades] = useState({
-    playGroup: false,
-    primary: false,
-    middle: false,
-    high: false,
-    intermediate: false,
-    oLevel: false,
-    aLevel: false,
-    allGrades: false,
+    playGroup: '',
+    primary: '',
+    middle: '',
+    high: '',
+    intermediate: '',
+    oLevel: '',
+    aLevel: '',
+    allGrades: '',
   });
 
   const [tuitionSubjects, setTuitionSubjects] = useState({
-    math: false,
-    science: false,
-    holyQuran: false,
-    physics: false,
-    chemistry: false,
-    biology: false,
-    computerScience: false,
-    english: false,
-    allScienceSubjects: false,
-    artSubjects: false,
+    math: '',
+    science: '',
+    holyQuran: '',
+    physics: '',
+    chemistry: '',
+    biology: '',
+    computerScience: '',
+    english: '',
+    allScienceSubjects: '',
+    artSubjects: '',
   });
 
   const [tuitionFee, setTuitionFee] = useState('');
@@ -81,10 +81,10 @@ const TutorProfile = () => {
   const [showBoardRegions, setShowBoardRegions] = useState(true);
   const [newImageURL, setNewImageUrl] = useState('');
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
 
@@ -185,12 +185,12 @@ const TutorProfile = () => {
       if (prev[region] === true) return prev;
 
       return {
-        federal: false,
-        punjab: false,
-        sindh: false,
-        kpk: false,
-        azadKashmir: false,
-        balochistan: false,
+        federal: '',
+        punjab: '',
+        sindh: '',
+        kpk: '',
+        azadKashmir: '',
+        balochistan: '',
         [region]: true,
       };
     });
@@ -231,9 +231,10 @@ const TutorProfile = () => {
 
   const handleUpdateProfile = async () => {
     const user = auth().currentUser;
+    const tuitionFeeString = tuitionFee.trim();
     if (user && profileData.id) {
       try {
-        setLoading(true);
+        setButtonLoading(true);
         await firestore()
           .collection('tutor_profile')
           .doc(profileData.id)
@@ -248,9 +249,8 @@ const TutorProfile = () => {
             boardRegions: boardRegions || profileData.boardRegions,
             tuitionGrades: tuitionGrades || profileData.tuitionGrades,
             tuitionSubjects: tuitionSubjects || profileData.tuitionSubjects,
-            tuitionFee: tuitionFee || profileData.tuitionFee,
-            teachingExperience:
-              teachingExperience || profileData.teachingExperience,
+            tuitionFee: profileData.tuitionFee || '',
+            teachingExperience: profileData.teachingExperience || '',
           });
         setShowSuccessModal(true);
         setTimeout(() => {
@@ -264,7 +264,7 @@ const TutorProfile = () => {
           setShowErrorModal(false);
         }, 3000);
       } finally {
-        setLoading(false);
+        setButtonLoading(false);
       }
     }
   };
@@ -318,472 +318,47 @@ const TutorProfile = () => {
         </Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.cardContainer}>
-          <TouchableOpacity
-            style={styles.imgContainer}
-            onPress={handleImagePress}>
-            {newImageURL || profileData?.profileImage ? (
-              <Image
-                source={{uri: newImageURL || profileData?.profileImage}}
-                style={styles.image}
-              />
-            ) : (
-              <Image source={imgPlaceHolder} style={styles.image} />
-            )}
-          </TouchableOpacity>
-
-          <View style={styles.personalDetailsContainer}>
-            <View style={styles.headingLabelContainer}>
-              <Text
-                style={{
-                  color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  fontSize: width * 0.04,
-                  left: width * 0.05,
-                  fontFamily: FONTS.medium,
-                  marginBottom: height * 0.02,
-                }}>
-                Personal Details (Required)*
-              </Text>
-            </View>
-
-            <View style={styles.inputFieldContainer}>
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="person-outline"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
+      {loading ? (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator
+            size={35}
+            color={colorScheme === 'dark' ? COLORS.white : COLORS.primary}
+          />
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.cardContainer}>
+            <TouchableOpacity
+              style={styles.imgContainer}
+              onPress={handleImagePress}>
+              {newImageURL || profileData?.profileImage ? (
+                <Image
+                  source={{uri: newImageURL || profileData?.profileImage}}
+                  style={styles.image}
                 />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Full Name *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={profileData?.fullName || ''}
-                  onChangeText={e => handleInputChange('fullName', e)}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="mail-outline"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Email *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={profileData?.email || ''}
-                  editable={false}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="call-outline"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  keyboardType="phone-pad"
-                  placeholder="Phone Number *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={profileData?.phone || ''}
-                  editable={false}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="home-outline"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="City *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={profileData?.city || ''}
-                  onChangeText={e => handleInputChange('city', e)}
-                />
-              </View>
-
-              <View style={styles.pickerContainer}>
-                <Ionicons
-                  name="male-outline"
-                  size={25}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.icon}
-                />
-                <Picker
-                  selectedValue={profileData?.gender}
-                  style={[
-                    styles.picker,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  onValueChange={e => handleInputChange('gender', e)}>
-                  <Picker.Item label="Select Gender *" value="" />
-                  <Picker.Item label="Male" value="Male" />
-                  <Picker.Item label="Female" value="Female" />
-                </Picker>
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="person-outline"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Age *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={profileData?.age || ''}
-                  editable={false}
-                />
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Ionicons
-                  name="school-outline"
-                  size={20}
-                  color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
-                  style={styles.inputIcon}
-                />
-                <TextInput
-                  style={[
-                    styles.inputField,
-                    {
-                      color:
-                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                    },
-                  ]}
-                  placeholder="Highest Education *"
-                  placeholderTextColor={
-                    colorScheme === 'dark' ? COLORS.white : COLORS.dark
-                  }
-                  value={profileData?.education || ''}
-                  editable={false}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.tuitionDetailsContainer}>
-            <View style={styles.headingLabelContainer}>
-              <Text
-                style={{
-                  color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  fontSize: width * 0.04,
-                  left: width * 0.05,
-                  fontFamily: FONTS.medium,
-                  marginBottom: height * 0.02,
-                }}>
-                Tuition Details (Required)*
-              </Text>
-            </View>
-
-            <View style={styles.tuitionSubDetailsContainer}>
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Tuition Language *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  {renderCheckbox('Urdu', tuitionLanguage?.urdu, () =>
-                    handleTuitionLanguageChange('urdu'),
-                  )}
-
-                  {renderCheckbox('English', tuitionLanguage?.english, () =>
-                    handleTuitionLanguageChange('english'),
-                  )}
-                </View>
-              </View>
-
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Tuition Type *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  {renderCheckbox('Online', tuitionType?.online, () =>
-                    handleTuitionTypeChange('online'),
-                  )}
-
-                  {renderCheckbox('Offline', tuitionType?.offline, () =>
-                    handleTuitionTypeChange('offline'),
-                  )}
-                </View>
-              </View>
-
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Syllabus Type *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  {renderCheckbox(
-                    'Bise',
-                    syllabusType?.bise,
-                    () => handleSyllabusToggle('bise'),
-                    syllabusType?.bise,
-                  )}
-                  {renderCheckbox(
-                    'Cambridge',
-                    syllabusType?.cambridge,
-                    () => handleSyllabusToggle('cambridge'),
-                    syllabusType?.cambridge,
-                  )}
-                </View>
-              </View>
-
-              {showBoardRegions && (
-                <View style={styles.tuitionSubCategories}>
-                  <View style={styles.subDetailTitleContainer}>
-                    <Text
-                      style={[
-                        styles.subDetailTitleText,
-                        {
-                          color:
-                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                        },
-                      ]}>
-                      Select Regions of BISE Boards *
-                    </Text>
-                  </View>
-
-                  <View style={styles.subOptionsContainer}>
-                    <View style={styles.row}>
-                      {['Federal', 'Punjab', 'Sindh'].map(region =>
-                        renderCheckbox(
-                          region,
-                          boardRegions[region.toLowerCase()],
-                          () => handleBoardRegionChange(region.toLowerCase()),
-                        ),
-                      )}
-                    </View>
-
-                    <View style={styles.row}>
-                      {['KPK', 'Azad Kashmir', 'Balochistan'].map(region =>
-                        renderCheckbox(
-                          region,
-                          boardRegions[region.toLowerCase()],
-                          () => handleBoardRegionChange(region.toLowerCase()),
-                        ),
-                      )}
-                    </View>
-                  </View>
-                </View>
+              ) : (
+                <Image source={imgPlaceHolder} style={styles.image} />
               )}
+            </TouchableOpacity>
 
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Select Tuition Grades *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  <View style={styles.row}>
-                    {renderCheckbox('PlayGroup', tuitionGrades.playGroup, () =>
-                      handleTuitionGradesChange('playGroup'),
-                    )}
-
-                    {renderCheckbox(
-                      'Primary(1st-5th)',
-                      tuitionGrades.primary,
-                      () => handleTuitionGradesChange('primary'),
-                    )}
-
-                    {renderCheckbox(
-                      'Middle(6th-8th)',
-                      tuitionGrades.middle,
-                      () => handleTuitionGradesChange('middle'),
-                    )}
-
-                    {renderCheckbox('High(9th-10th)', tuitionGrades.high, () =>
-                      handleTuitionGradesChange('high'),
-                    )}
-                  </View>
-
-                  <View style={styles.row}>
-                    {renderCheckbox(
-                      'Inter(11th-12th)',
-                      tuitionGrades.intermediate,
-                      () => handleTuitionGradesChange('intermediate'),
-                    )}
-
-                    {renderCheckbox('O-Level', tuitionGrades.oLevel, () =>
-                      handleTuitionGradesChange('oLevel'),
-                    )}
-
-                    {renderCheckbox('A-Level', tuitionGrades.aLevel, () =>
-                      handleTuitionGradesChange('aLevel'),
-                    )}
-
-                    {renderCheckbox('All Grades', tuitionGrades.allGrades, () =>
-                      handleTuitionGradesChange('allGrades'),
-                    )}
-                  </View>
-                </View>
+            <View style={styles.personalDetailsContainer}>
+              <View style={styles.headingLabelContainer}>
+                <Text
+                  style={{
+                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    fontSize: width * 0.04,
+                    left: width * 0.05,
+                    fontFamily: FONTS.medium,
+                    marginBottom: height * 0.02,
+                  }}>
+                  Personal Details (Required)*
+                </Text>
               </View>
 
-              <View style={styles.tuitionSubCategories}>
-                <View style={styles.subDetailTitleContainer}>
-                  <Text
-                    style={[
-                      styles.subDetailTitleText,
-                      {
-                        color:
-                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                      },
-                    ]}>
-                    Select Tuition Subjects *
-                  </Text>
-                </View>
-
-                <View style={styles.subOptionsContainer}>
-                  <View style={styles.row}>
-                    {renderCheckbox('Maths', tuitionSubjects.math, () =>
-                      handleTuitionSubjectsChange('math'),
-                    )}
-
-                    {renderCheckbox('Science', tuitionSubjects.science, () =>
-                      handleTuitionSubjectsChange('science'),
-                    )}
-
-                    {renderCheckbox('Quran', tuitionSubjects.holyQuran, () =>
-                      handleTuitionSubjectsChange('holyQuran'),
-                    )}
-
-                    {renderCheckbox('Physics', tuitionSubjects.physics, () =>
-                      handleTuitionSubjectsChange('physics'),
-                    )}
-                  </View>
-
-                  <View style={styles.row}>
-                    {renderCheckbox(
-                      'Chemistry',
-                      tuitionSubjects.chemistry,
-                      () => handleTuitionSubjectsChange('chemistry'),
-                    )}
-
-                    {renderCheckbox('Biology', tuitionSubjects.biology, () =>
-                      handleTuitionSubjectsChange('biology'),
-                    )}
-
-                    {renderCheckbox(
-                      'Computer',
-                      tuitionSubjects.computerScience,
-                      () => handleTuitionSubjectsChange('computerScience'),
-                    )}
-
-                    {renderCheckbox('English', tuitionSubjects.english, () =>
-                      handleTuitionSubjectsChange('english'),
-                    )}
-                  </View>
-
-                  <View style={styles.row}>
-                    {renderCheckbox(
-                      'All Subjects',
-                      tuitionSubjects.allScienceSubjects,
-                      () => handleTuitionSubjectsChange('allScienceSubjects'),
-                    )}
-
-                    {renderCheckbox('Arts', tuitionSubjects.artSubjects, () =>
-                      handleTuitionSubjectsChange('artSubjects'),
-                    )}
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.tuitionSubCategories}>
+              <View style={styles.inputFieldContainer}>
                 <View style={styles.inputContainer}>
                   <Ionicons
-                    name="cash-outline"
+                    name="person-outline"
                     size={20}
                     color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
                     style={styles.inputIcon}
@@ -796,17 +371,135 @@ const TutorProfile = () => {
                           colorScheme === 'dark' ? COLORS.white : COLORS.dark,
                       },
                     ]}
-                    placeholder="Tuition Fee *"
+                    placeholder="Full Name *"
                     placeholderTextColor={
                       colorScheme === 'dark' ? COLORS.white : COLORS.dark
                     }
-                    value={profileData?.tuitionFee || ''}
-                    onChangeText={e => handleInputChange('tuitionFee', e)}
+                    value={profileData?.fullName || ''}
+                    onChangeText={e => handleInputChange('fullName', e)}
                   />
                 </View>
-              </View>
 
-              <View style={styles.tuitionSubCategories}>
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="mail-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="Email *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={profileData?.email || ''}
+                    editable={false}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="call-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    keyboardType="phone-pad"
+                    placeholder="Phone Number *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={profileData?.phone || ''}
+                    editable={false}
+                  />
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="home-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="City *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={profileData?.city || ''}
+                    onChangeText={e => handleInputChange('city', e)}
+                  />
+                </View>
+
+                <View style={styles.pickerContainer}>
+                  <Ionicons
+                    name="male-outline"
+                    size={25}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.icon}
+                  />
+                  <Picker
+                    selectedValue={profileData?.gender}
+                    style={[
+                      styles.picker,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    onValueChange={e => handleInputChange('gender', e)}>
+                    <Picker.Item label="Select Gender *" value="" />
+                    <Picker.Item label="Male" value="Male" />
+                    <Picker.Item label="Female" value="Female" />
+                  </Picker>
+                </View>
+
+                <View style={styles.inputContainer}>
+                  <Ionicons
+                    name="person-outline"
+                    size={20}
+                    color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
+                    style={styles.inputIcon}
+                  />
+                  <TextInput
+                    style={[
+                      styles.inputField,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}
+                    placeholder="Age *"
+                    placeholderTextColor={
+                      colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                    }
+                    value={profileData?.age || ''}
+                    editable={false}
+                  />
+                </View>
+
                 <View style={styles.inputContainer}>
                   <Ionicons
                     name="school-outline"
@@ -822,35 +515,363 @@ const TutorProfile = () => {
                           colorScheme === 'dark' ? COLORS.white : COLORS.dark,
                       },
                     ]}
-                    placeholder="Teaching Experience *"
+                    placeholder="Highest Education *"
                     placeholderTextColor={
                       colorScheme === 'dark' ? COLORS.white : COLORS.dark
                     }
-                    value={profileData?.teachingExperience || ''}
-                    onChangeText={e =>
-                      handleInputChange('teachingExperience', e)
-                    }
+                    value={profileData?.education || ''}
+                    editable={false}
                   />
                 </View>
               </View>
             </View>
-          </View>
 
-          <View style={styles.btnContainer}>
-            <TouchableOpacity
-              style={[styles.createProfileBtn]}
-              onPress={handleUpdateProfile}>
-              <Text style={styles.createProfileText}>
-                {loading ? (
-                  <ActivityIndicator color={COLORS.white} size={25} />
-                ) : (
-                  'Update Profile'
+            <View style={styles.tuitionDetailsContainer}>
+              <View style={styles.headingLabelContainer}>
+                <Text
+                  style={{
+                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    fontSize: width * 0.04,
+                    left: width * 0.05,
+                    fontFamily: FONTS.medium,
+                    marginBottom: height * 0.02,
+                  }}>
+                  Tuition Details (Required)*
+                </Text>
+              </View>
+
+              <View style={styles.tuitionSubDetailsContainer}>
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Tuition Language *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    {renderCheckbox('Urdu', tuitionLanguage?.urdu, () =>
+                      handleTuitionLanguageChange('urdu'),
+                    )}
+
+                    {renderCheckbox('English', tuitionLanguage?.english, () =>
+                      handleTuitionLanguageChange('english'),
+                    )}
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Tuition Type *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    {renderCheckbox('Online', tuitionType?.online, () =>
+                      handleTuitionTypeChange('online'),
+                    )}
+
+                    {renderCheckbox('Offline', tuitionType?.offline, () =>
+                      handleTuitionTypeChange('offline'),
+                    )}
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Syllabus Type *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    {renderCheckbox(
+                      'Bise',
+                      syllabusType?.bise,
+                      () => handleSyllabusToggle('bise'),
+                      syllabusType?.bise,
+                    )}
+                    {renderCheckbox(
+                      'Cambridge',
+                      syllabusType?.cambridge,
+                      () => handleSyllabusToggle('cambridge'),
+                      syllabusType?.cambridge,
+                    )}
+                  </View>
+                </View>
+
+                {showBoardRegions && (
+                  <View style={styles.tuitionSubCategories}>
+                    <View style={styles.subDetailTitleContainer}>
+                      <Text
+                        style={[
+                          styles.subDetailTitleText,
+                          {
+                            color:
+                              colorScheme === 'dark'
+                                ? COLORS.white
+                                : COLORS.dark,
+                          },
+                        ]}>
+                        Select Regions of BISE Boards *
+                      </Text>
+                    </View>
+
+                    <View style={styles.subOptionsContainer}>
+                      <View style={styles.row}>
+                        {['Federal', 'Punjab', 'Sindh'].map(region =>
+                          renderCheckbox(
+                            region,
+                            boardRegions[region.toLowerCase()],
+                            () => handleBoardRegionChange(region.toLowerCase()),
+                          ),
+                        )}
+                      </View>
+
+                      <View style={styles.row}>
+                        {['KPK', 'Azad Kashmir', 'Balochistan'].map(region =>
+                          renderCheckbox(
+                            region,
+                            boardRegions[region.toLowerCase()],
+                            () => handleBoardRegionChange(region.toLowerCase()),
+                          ),
+                        )}
+                      </View>
+                    </View>
+                  </View>
                 )}
-              </Text>
-            </TouchableOpacity>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Select Tuition Grades *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'PlayGroup',
+                        tuitionGrades.playGroup,
+                        () => handleTuitionGradesChange('playGroup'),
+                      )}
+
+                      {renderCheckbox(
+                        'Primary(1st-5th)',
+                        tuitionGrades.primary,
+                        () => handleTuitionGradesChange('primary'),
+                      )}
+
+                      {renderCheckbox(
+                        'Middle(6th-8th)',
+                        tuitionGrades.middle,
+                        () => handleTuitionGradesChange('middle'),
+                      )}
+
+                      {renderCheckbox(
+                        'High(9th-10th)',
+                        tuitionGrades.high,
+                        () => handleTuitionGradesChange('high'),
+                      )}
+                    </View>
+
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'Inter(11th-12th)',
+                        tuitionGrades.intermediate,
+                        () => handleTuitionGradesChange('intermediate'),
+                      )}
+
+                      {renderCheckbox('O-Level', tuitionGrades.oLevel, () =>
+                        handleTuitionGradesChange('oLevel'),
+                      )}
+
+                      {renderCheckbox('A-Level', tuitionGrades.aLevel, () =>
+                        handleTuitionGradesChange('aLevel'),
+                      )}
+
+                      {renderCheckbox(
+                        'All Grades',
+                        tuitionGrades.allGrades,
+                        () => handleTuitionGradesChange('allGrades'),
+                      )}
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.subDetailTitleContainer}>
+                    <Text
+                      style={[
+                        styles.subDetailTitleText,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}>
+                      Select Tuition Subjects *
+                    </Text>
+                  </View>
+
+                  <View style={styles.subOptionsContainer}>
+                    <View style={styles.row}>
+                      {renderCheckbox('Maths', tuitionSubjects.math, () =>
+                        handleTuitionSubjectsChange('math'),
+                      )}
+
+                      {renderCheckbox('Science', tuitionSubjects.science, () =>
+                        handleTuitionSubjectsChange('science'),
+                      )}
+
+                      {renderCheckbox('Quran', tuitionSubjects.holyQuran, () =>
+                        handleTuitionSubjectsChange('holyQuran'),
+                      )}
+
+                      {renderCheckbox('Physics', tuitionSubjects.physics, () =>
+                        handleTuitionSubjectsChange('physics'),
+                      )}
+                    </View>
+
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'Chemistry',
+                        tuitionSubjects.chemistry,
+                        () => handleTuitionSubjectsChange('chemistry'),
+                      )}
+
+                      {renderCheckbox('Biology', tuitionSubjects.biology, () =>
+                        handleTuitionSubjectsChange('biology'),
+                      )}
+
+                      {renderCheckbox(
+                        'Computer',
+                        tuitionSubjects.computerScience,
+                        () => handleTuitionSubjectsChange('computerScience'),
+                      )}
+
+                      {renderCheckbox('English', tuitionSubjects.english, () =>
+                        handleTuitionSubjectsChange('english'),
+                      )}
+                    </View>
+
+                    <View style={styles.row}>
+                      {renderCheckbox(
+                        'All Subjects',
+                        tuitionSubjects.allScienceSubjects,
+                        () => handleTuitionSubjectsChange('allScienceSubjects'),
+                      )}
+
+                      {renderCheckbox('Arts', tuitionSubjects.artSubjects, () =>
+                        handleTuitionSubjectsChange('artSubjects'),
+                      )}
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.inputContainer}>
+                    <Ionicons
+                      name="cash-outline"
+                      size={20}
+                      color={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      style={styles.inputIcon}
+                    />
+                    <TextInput
+                      style={[
+                        styles.inputField,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}
+                      placeholder="Tuition Fee *"
+                      placeholderTextColor={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      value={profileData?.tuitionFee || ''}
+                      onChangeText={e => handleInputChange('tuitionFee', e)}
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.tuitionSubCategories}>
+                  <View style={styles.inputContainer}>
+                    <Ionicons
+                      name="school-outline"
+                      size={20}
+                      color={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      style={styles.inputIcon}
+                    />
+                    <TextInput
+                      style={[
+                        styles.inputField,
+                        {
+                          color:
+                            colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                        },
+                      ]}
+                      placeholder="Teaching Experience *"
+                      placeholderTextColor={
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark
+                      }
+                      value={profileData?.teachingExperience || ''}
+                      onChangeText={e =>
+                        handleInputChange('teachingExperience', e)
+                      }
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={[styles.createProfileBtn]}
+                onPress={handleUpdateProfile}>
+                <Text style={styles.createProfileText}>
+                  {buttonLoading ? (
+                    <ActivityIndicator color={COLORS.white} size={25} />
+                  ) : (
+                    'Update Profile'
+                  )}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
 
       <ImageUploadModal
         visible={showImageUploadModal}
@@ -861,19 +882,11 @@ const TutorProfile = () => {
       />
 
       <CustomModal
-        visible={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        animationSource={require('../../../../assets/animations/email.json')}
-        title="Working!"
-        description="Please Wait While Creating Your Tutor Profile."
-      />
-
-      <CustomModal
         visible={showSuccessModal}
         onClose={() => setShowSuccessModal(false)}
         animationSource={require('../../../../assets/animations/success.json')}
         title="Success!"
-        description="Profile created successfully!"
+        description="Profile updated successfully!"
       />
 
       <CustomModal
@@ -881,7 +894,7 @@ const TutorProfile = () => {
         onClose={() => setShowErrorModal(false)}
         animationSource={require('../../../../assets/animations/error.json')}
         title="Failure!"
-        description="There was an error creating your profile!"
+        description="There was an error updating your profile!"
       />
     </SafeAreaView>
   );
@@ -906,6 +919,12 @@ const styles = StyleSheet.create({
     paddingVertical: width * 0.05,
     borderBottomWidth: 2,
     borderBottomColor: COLORS.gray,
+  },
+
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   scrollContainer: {

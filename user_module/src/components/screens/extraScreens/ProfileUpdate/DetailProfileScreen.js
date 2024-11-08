@@ -29,6 +29,7 @@ const DetailProfileScreen = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const navigation = useNavigation();
   const [showImageUploadModal, setShowImageUploadModal] = useState(false);
   const [showNameUpdateModal, setShowNameUpdateModal] = useState(false);
@@ -130,7 +131,7 @@ const DetailProfileScreen = () => {
 
   const handleUpdateProfile = async () => {
     const user = auth().currentUser;
-    setLoading(true);
+    setButtonLoading(true);
 
     try {
       let updatedProfile = {};
@@ -185,7 +186,7 @@ const DetailProfileScreen = () => {
         setShowErrorModal(false);
       }, 2000);
     } finally {
-      setLoading(false);
+      setButtonLoading(false);
     }
   };
 
@@ -375,13 +376,13 @@ const DetailProfileScreen = () => {
                     },
                   ]}>
                   <View style={styles.leftContainer}>
-                    {loading ? (
+                    {buttonLoading ? (
                       <ActivityIndicator size={25} color={COLORS.white} />
                     ) : (
                       <>
                         <View style={styles.iconContainer}>
                           <Ionicons
-                            name="edit"
+                            name="pencil"
                             size={25}
                             color={COLORS.white}
                             style={{bottom: 2}}

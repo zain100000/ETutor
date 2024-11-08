@@ -92,6 +92,7 @@ const TutorProfile = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
   const authInstance = auth();
@@ -170,12 +171,12 @@ const TutorProfile = () => {
   const handleBoardRegionChange = region => {
     setBoardRegions(prev => {
       const updated = {
-        federal,
-        punjab,
-        sindh,
-        kpk,
-        azadKashmir,
-        balochistan,
+        federal: '',
+        punjab: '',
+        sindh: '',
+        kpk: '',
+        azadKashmir: '',
+        balochistan: '',
         [region]: true,
       };
       return updated;
@@ -210,19 +211,19 @@ const TutorProfile = () => {
   };
 
   const handleCreateTutorProfile = async () => {
-    setLoading(true);
+    setButtonLoading(true);
     setShowAuthModal(true);
 
     if (!city || !gender || !age || !education) {
       alert('Please fill in all the required fields.');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
 
     if (isNaN(age) || age < 18) {
       alert('Please enter a valid age (must be greater than 18).');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
@@ -230,28 +231,28 @@ const TutorProfile = () => {
     const tuitionFeeString = tuitionFee.trim();
     if (!tuitionFeeString || tuitionFeeString === '') {
       alert('Please enter a valid tuition fee.');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
 
     if (!tuitionLanguage.urdu && !tuitionLanguage.english) {
       alert('Please select at least one tuition language (Urdu or English).');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
 
     if (!tuitionType.online && !tuitionType.offline) {
       alert('Please select at least one tuition type (Online or Offline).');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
 
     if (!syllabusType.bise && !syllabusType.cambridge) {
       alert('Please select at least one syllabus type (Bise or Cambridge).');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
@@ -265,7 +266,7 @@ const TutorProfile = () => {
       !boardRegions.balochistan
     ) {
       alert('Please select at least one board region.');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
@@ -281,7 +282,7 @@ const TutorProfile = () => {
       !tuitionGrades.allGrades
     ) {
       alert('Please select at least one tuition grade.');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
@@ -299,7 +300,7 @@ const TutorProfile = () => {
       !tuitionSubjects.artSubjects
     ) {
       alert('Please select at least one tuition subject.');
-      setLoading(false);
+      setButtonLoading(false);
       setShowAuthModal(false);
       return;
     }
@@ -419,7 +420,7 @@ const TutorProfile = () => {
         setShowErrorModal(false);
       }, 3000);
     } finally {
-      setLoading(false);
+      setButtonLoading(false);
     }
   };
 
@@ -609,7 +610,7 @@ const TutorProfile = () => {
                     style={styles.icon}
                   />
                   <Picker
-                    Value={gender}
+                    selectedValue={gender}
                     style={[
                       styles.picker,
                       {
@@ -617,7 +618,7 @@ const TutorProfile = () => {
                           colorScheme === 'dark' ? COLORS.white : COLORS.dark,
                       },
                     ]}
-                    onValueChange={e => setGender(e)}>
+                    onValueChange={value => setGender(value)}>
                     <Picker.Item label="Select Gender *" value="" />
                     <Picker.Item label="Male" value="Male" />
                     <Picker.Item label="Female" value="Female" />
@@ -1001,7 +1002,6 @@ const TutorProfile = () => {
                             colorScheme === 'dark' ? COLORS.white : COLORS.dark,
                         },
                       ]}
-                      keyboardType="phone-pad"
                       placeholder="Teaching Experience *"
                       placeholderTextColor={
                         colorScheme === 'dark' ? COLORS.white : COLORS.dark
@@ -1019,7 +1019,7 @@ const TutorProfile = () => {
                 style={[styles.createProfileBtn]}
                 onPress={handleCreateTutorProfile}>
                 <Text style={styles.createProfileText}>
-                  {loading ? (
+                  {buttonLoading ? (
                     <ActivityIndicator color={COLORS.white} size={25} />
                   ) : (
                     'Create Profile'
