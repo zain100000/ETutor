@@ -10,11 +10,12 @@ import {
   ActivityIndicator,
   useColorScheme,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import {COLORS, FONTS} from '../constants/Constants';
 import {useNavigation} from '@react-navigation/native';
 import CustomModal from '../utils/modals/CustomModal';
-import firebase from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const {width, height} = Dimensions.get('window');
 
@@ -23,7 +24,6 @@ const ForgotPassword = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
@@ -50,30 +50,31 @@ const ForgotPassword = () => {
     }
   };
 
-  const validateEmail = () => {
-    if (!email) {
-      return 'Email is required';
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return 'Invalid email format';
-    }
-    return '';
-  };
-
   const handleForgotPassword = async () => {
-    setSubmitted(true);
     if (!isButtonEnabled) return;
-
     setLoading(true);
+
     try {
-      await firebase.auth().sendPasswordResetEmail(email);
-      setShowSuccessModal(true);
-      setTimeout(() => {
-        setShowSuccessModal(false);
-        navigation.navigate('Signin');
-      }, 3000);
-      setEmail('');
+      const appUsersRef = firestore().collection('app_users');
+      const userQuerySnapshot = await appUsersRef
+        .where('email', '==', email)
+        .get();
+      const userExistsInFirestore = !userQuerySnapshot.empty;
+
+      if (userExistsInFirestore) {
+        await auth().sendPasswordResetEmail(email);
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+          navigation.navigate('Signin');
+        }, 3000);
+        setEmail('');
+      } else {
+        setShowErrorModal(true);
+        setTimeout(() => {
+          setShowErrorModal(false);
+        }, 3000);
+      }
     } catch (error) {
       console.error('Password reset failed:', error.message);
       setShowErrorModal(true);
@@ -103,8 +104,8 @@ const ForgotPassword = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('Auth')}>
-          <Ionicons
-            name="chevron-back"
+          <Feather
+            name="chevron-left"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />
@@ -146,15 +147,13 @@ const ForgotPassword = () => {
             ]}
             placeholder="Enter Your Email"
             placeholderTextColor={
-              colorScheme === 'dark' ? COLORS.white : COLORS.dark
+              colorScheme === 'dark' ? COLORS.gray : COLORS.dark
             }
             keyboardType="email-address"
             value={email}
             onChangeText={handleEmailChange}
           />
-          {emailError && emailError ? (
-            <Text style={styles.errorText}>{emailError}</Text>
-          ) : null}
+          {emailError && <Text style={styles.errorText}>{emailError}</Text>}
         </View>
 
         <View style={styles.forgotPasswordBtnContainer}>
@@ -250,14 +249,14 @@ const styles = StyleSheet.create({
   },
 
   inputField: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
+    borderColor: COLORS.primary,
     paddingHorizontal: width * 0.03,
     marginVertical: height * 0.02,
     fontSize: width * 0.045,
     fontFamily: FONTS.regular,
     color: COLORS.dark,
-    borderColor: COLORS.primary,
   },
 
   forgotPasswordBtnContainer: {

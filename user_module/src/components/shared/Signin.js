@@ -83,7 +83,7 @@ const Signin = () => {
     } else {
       setPasswordError('');
     }
-  }; 
+  };
 
   const handleLogin = async () => {
     if (isValidInput()) {
@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    top: height * 0.065,
+    top: height * 0.1,
     padding: height * 0.05,
     gap: 20,
   },
