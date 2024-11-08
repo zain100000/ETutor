@@ -34,11 +34,11 @@ const DeleteAccountModal = ({visible, title, description, onClose}) => {
       const user = auth().currentUser;
       if (!user) throw new Error('No user is currently signed in');
 
-      await user.delete();
-
       const userId = user.uid;
       const userRef = firestore().collection('app_users').doc(userId);
       await userRef.delete();
+
+      await user.delete();
 
       const tutorProfileSnapshot = await firestore()
         .collection('tutor_profile')
