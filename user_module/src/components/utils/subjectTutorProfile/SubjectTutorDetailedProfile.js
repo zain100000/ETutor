@@ -121,7 +121,7 @@ const SubjectTutorDetailedProfile = () => {
             styles.headerTitleText,
             {color: colorScheme === 'dark' ? COLORS.white : COLORS.dark},
           ]}>
-          Detailed Profile
+          {tutorData?.fullName} Profile
         </Text>
       </View>
 
