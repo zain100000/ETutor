@@ -18,6 +18,8 @@ import TutorProfile from './src/components/screens/extraScreens/Tutor/TutorProfi
 import MyTutorProfile from './src/components/screens/extraScreens/Tutor/MyTutorProfile';
 import Profile from './src/components/screens/Profile';
 import UpdateTutorProfile from './src/components/screens/extraScreens/Tutor/UpdateTutorProfile';
+import SubjectTutorProfile from './src/components/utils/subjectTutorProfile/SubjectTutorProfile';
+import SubjectTutorDetailedProfile from './src/components/utils/subjectTutorProfile/SubjectTutorDetailedProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -111,7 +113,28 @@ const App = () => {
 
         <Stack.Screen name="Edit_Tutor_Profile">
           {props => (
-            <UpdateTutorProfile {...props} setStatusBarColor={setStatusBarColor} />
+            <UpdateTutorProfile
+              {...props}
+              setStatusBarColor={setStatusBarColor}
+            />
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="Subject_Tutor_Profile">
+          {props => (
+            <SubjectTutorProfile
+              {...props}
+              setStatusBarColor={setStatusBarColor}
+            />
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="Subject_Tutor_Detailed_Profile">
+          {props => (
+            <SubjectTutorDetailedProfile
+              {...props}
+              setStatusBarColor={setStatusBarColor}
+            />
           )}
         </Stack.Screen>
       </Stack.Navigator>

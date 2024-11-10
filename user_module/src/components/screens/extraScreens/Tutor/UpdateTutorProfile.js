@@ -231,7 +231,6 @@ const TutorProfile = () => {
 
   const handleUpdateProfile = async () => {
     const user = auth().currentUser;
-    const tuitionFeeString = tuitionFee.trim();
     if (user && profileData.id) {
       try {
         setButtonLoading(true);
@@ -243,6 +242,8 @@ const TutorProfile = () => {
             fullName: fullName || profileData.fullName,
             city: city || profileData.city,
             gender: gender || profileData.gender,
+            age: age || profileData.age,
+            education: education || profileData.education,
             tuitionLanguage: tuitionLanguage || profileData.tuitionLanguage,
             tuitionType: tuitionType || profileData.tuitionType,
             syllabusType: syllabusType || profileData.syllabusType,
@@ -496,7 +497,7 @@ const TutorProfile = () => {
                       colorScheme === 'dark' ? COLORS.white : COLORS.dark
                     }
                     value={profileData?.age || ''}
-                    editable={false}
+                    onChangeText={e => handleInputChange('age', e)}
                   />
                 </View>
 
@@ -520,7 +521,7 @@ const TutorProfile = () => {
                       colorScheme === 'dark' ? COLORS.white : COLORS.dark
                     }
                     value={profileData?.education || ''}
-                    editable={false}
+                    onChangeText={e => handleInputChange('education', e)}
                   />
                 </View>
               </View>

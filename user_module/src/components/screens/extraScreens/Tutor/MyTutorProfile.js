@@ -15,8 +15,6 @@ import {
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {COLORS, FONTS} from '../../../constants/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import imgPlaceHolder from '../../../../assets/placeholders/default-avatar.png';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -197,8 +195,8 @@ const MyTutorProfile = () => {
             ]}>
             <View style={styles.subCardLeftContent}>
               <View style={styles.subCardIconContainer}>
-                <FontAwesome5
-                  name="chalkboard-teacher"
+                <Ionicons
+                  name="briefcase-outline"
                   size={20}
                   style={[
                     styles.subCardIcon,
@@ -235,8 +233,8 @@ const MyTutorProfile = () => {
 
             <View style={styles.subCardRightContent}>
               <View style={styles.subCardIconContainer}>
-                <FontAwesome
-                  name="money"
+                <Ionicons
+                  name="cash-outline"
                   size={20}
                   style={[
                     styles.subCardIcon,
@@ -385,7 +383,7 @@ const MyTutorProfile = () => {
             <FlatList
               data={[
                 {
-                  icon: 'globe',
+                  icon: 'globe-outline',
                   title: 'Tuition Language',
                   values: profileData?.tuitionLanguage
                     ? Object.keys(profileData.tuitionLanguage).filter(
@@ -394,7 +392,7 @@ const MyTutorProfile = () => {
                     : [],
                 },
                 {
-                  icon: 'school',
+                  icon: 'school-outline',
                   title: 'Tuition Type',
                   values: profileData?.tuitionType
                     ? Object.keys(profileData.tuitionType).filter(
@@ -403,7 +401,7 @@ const MyTutorProfile = () => {
                     : [],
                 },
                 {
-                  icon: 'book',
+                  icon: 'book-outline',
                   title: 'Syllabus',
                   values: profileData?.syllabusType
                     ? Object.keys(profileData.syllabusType).filter(
@@ -412,7 +410,7 @@ const MyTutorProfile = () => {
                     : [],
                 },
                 {
-                  icon: 'cash',
+                  icon: 'cash-outline',
                   title: 'Fee',
                   values: profileData?.tuitionFee
                     ? [profileData.tuitionFee]
@@ -474,27 +472,27 @@ const MyTutorProfile = () => {
             <FlatList
               data={[
                 {
-                  icon: 'person',
+                  icon: 'person-outline',
                   title: 'Name',
                   values: profileData?.fullName ? [profileData.fullName] : [],
                 },
                 {
-                  icon: 'male',
+                  icon: 'male-outline',
                   title: 'Gender',
                   values: profileData?.gender ? [profileData.gender] : [],
                 },
                 {
-                  icon: 'calendar',
+                  icon: 'calendar-outline',
                   title: 'Age',
                   values: profileData?.age ? [profileData.age.toString()] : [],
                 },
                 {
-                  icon: 'location',
+                  icon: 'location-outline',
                   title: 'City',
                   values: profileData?.city ? [profileData.city] : [],
                 },
                 {
-                  icon: 'call',
+                  icon: 'call-outline',
                   title: 'Phone Number',
                   values: profileData?.phone ? [profileData.phone] : [],
                 },
@@ -554,12 +552,12 @@ const MyTutorProfile = () => {
             <FlatList
               data={[
                 {
-                  icon: 'school',
+                  icon: 'school-outline',
                   title: 'Education',
                   values: profileData?.education ? [profileData.education] : [],
                 },
                 {
-                  icon: 'briefcase',
+                  icon: 'briefcase-outline',
                   title: 'Teaching Experience',
                   values: profileData?.teachingExperience
                     ? [profileData.teachingExperience]

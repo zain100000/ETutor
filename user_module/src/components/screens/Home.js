@@ -10,6 +10,7 @@ import {
   useColorScheme,
   TouchableOpacity,
   Image,
+  FlatList,
 } from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
@@ -17,6 +18,15 @@ import auth from '@react-native-firebase/auth';
 import {COLORS, FONTS} from '../constants/Constants';
 import imgPlaceHolder from '../../assets/placeholders/default-avatar.png';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import mathImage from '../../assets/subjectIcons/math.png';
+import quranImage from '../../assets/subjectIcons/quran.png';
+import englishImage from '../../assets/subjectIcons/english.png';
+import physicsImage from '../../assets/subjectIcons/physics.png';
+import biologyImage from '../../assets/subjectIcons/biology.png';
+import chemistryImage from '../../assets/subjectIcons/chemistry.png';
+import computerImage from '../../assets/subjectIcons/computer.png';
+import SubjectCard from '../utils/subjectCard/SubjectCard';
 
 const {width, height} = Dimensions.get('window');
 
@@ -60,6 +70,20 @@ const Home = () => {
       loadData();
     }, []),
   );
+
+  const renderSubjectCard = ({item}) => (
+    <SubjectCard subjectImage={item.image} subjectName={item.name} />
+  );
+
+  const subjects = [
+    {id: '1', name: 'Maths', image: mathImage},
+    {id: '2', name: 'Holy Quran', image: quranImage},
+    {id: '3', name: 'English', image: englishImage},
+    {id: '4', name: 'Physics', image: physicsImage},
+    {id: '5', name: 'Biology', image: biologyImage},
+    {id: '6', name: 'Chemistry', image: chemistryImage},
+    {id: '7', name: 'Computer', image: computerImage},
+  ];
 
   return (
     <SafeAreaView
@@ -135,6 +159,16 @@ const Home = () => {
               onBlur={() => setSearchBorderColor(COLORS.lightGray)}
             />
           </View>
+        </View>
+
+        <View style={styles.subjectCardContainer}>
+          <FlatList
+            data={subjects}
+            renderItem={renderSubjectCard}
+            keyExtractor={item => item.id}
+            numColumns={3}
+            contentContainerStyle={styles.subjectCardContainer}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -243,5 +277,11 @@ const styles = StyleSheet.create({
 
   searchIcon: {
     marginRight: width * 0.01,
+  },
+
+  subjectCardContainer: {
+    paddingHorizontal: width * 0.03,
+    paddingTop: height * 0.02,
+    gap: width * 0.03,
   },
 });
