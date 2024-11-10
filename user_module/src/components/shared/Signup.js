@@ -38,7 +38,8 @@ const Signup = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showEmailExistsErrorModal, setShowEmailExistsErrorModal] =
+    useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
@@ -189,15 +190,14 @@ const Signup = () => {
         navigation.navigate('Signin');
       }, 3000);
     } catch (error) {
+      console.log(error);
       setShowAuthModal(false);
-      setTimeout(() => {
-        setShowErrorModal(true);
+      if (error.code === 'auth/email-already-in-use') {
+        setShowEmailExistsErrorModal(true);
         setTimeout(() => {
-          setShowErrorModal(false);
-        }, 1000);
-      }, 1000);
-
-      console.error('Signup failed:', error.message);
+          setShowEmailExistsErrorModal(false);
+        }, 2000);
+      }
     } finally {
       setLoading(false);
     }
@@ -334,7 +334,7 @@ const Signup = () => {
                 style={styles.eyeIconContainer}
                 onPress={() => setHidePassword(!hidePassword)}>
                 <Ionicons
-                  name={hidePassword ? 'eye-off' : 'eye'}
+                  name={hidePassword ? 'eye-off-outline' : 'eye-outline'}
                   size={25}
                   color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
                 />
@@ -431,11 +431,11 @@ const Signup = () => {
       />
 
       <CustomModal
-        visible={showErrorModal}
+        visible={showEmailExistsErrorModal}
         title="Failure!"
-        description="Something Went Wrong"
+        description="Email already exists!"
         animationSource={require('../../assets/animations/error.json')}
-        onClose={() => setShowErrorModal(false)}
+        onClose={() => setShowEmailExistsErrorModal(false)}
       />
     </SafeAreaView>
   );

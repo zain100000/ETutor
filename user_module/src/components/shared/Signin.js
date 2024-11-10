@@ -29,7 +29,8 @@ const Signin = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showUserNotFoundModal, setShowUserNotFoundModal] = useState(false);
+  const [showWrongPasswordModal, setShowWrongPasswordModal] = useState(false);
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
 
@@ -106,20 +107,16 @@ const Signin = () => {
       } catch (error) {
         setShowAuthModal(false);
 
-        if (error.code === 'auth/user-not-found') {
-          setShowErrorModal(true);
-
+        if (error.code === 'auth/no-current-user') {
+          setShowUserNotFoundModal(true);
           setTimeout(() => {
-            setShowErrorModal(false);
-          }, 3000);
-        } else if (error.code === 'auth/wrong-password') {
-          setShowErrorModal(true);
-
+            setShowUserNotFoundModal(false);
+          }, 2000);
+        } else if (error.code === 'auth/invalid-credential') {
+          setShowWrongPasswordModal(true);
           setTimeout(() => {
-            setShowErrorModal(false);
-          }, 3000);
-        } else {
-          setShowErrorModal(true);
+            setShowWrongPasswordModal(false);
+          }, 2000);
         }
       } finally {
         setLoading(false);
@@ -230,7 +227,7 @@ const Signin = () => {
                 style={styles.eyeIconContainer}
                 onPress={() => setHidePassword(!hidePassword)}>
                 <Ionicons
-                  name={hidePassword ? 'eye-off' : 'eye'}
+                  name={hidePassword ? 'eye-off-outline' : 'eye-outline'}
                   size={25}
                   color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
                 />
@@ -312,11 +309,19 @@ const Signin = () => {
       />
 
       <CustomModal
-        visible={showErrorModal}
+        visible={showUserNotFoundModal}
         title="Failure!"
-        description="Something Went Wrong"
+        description="User doesn't exists"
         animationSource={require('../../assets/animations/error.json')}
-        onClose={() => setShowErrorModal(false)}
+        onClose={() => setShowUserNotFoundModal(false)}
+      />
+
+      <CustomModal
+        visible={showWrongPasswordModal}
+        title="Failure!"
+        description="invalid password"
+        animationSource={require('../../assets/animations/error.json')}
+        onClose={() => setShowWrongPasswordModal(false)}
       />
     </SafeAreaView>
   );

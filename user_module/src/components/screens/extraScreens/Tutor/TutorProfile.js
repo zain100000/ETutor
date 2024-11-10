@@ -214,7 +214,7 @@ const TutorProfile = () => {
     setButtonLoading(true);
     setShowAuthModal(true);
 
-    if (!city || !gender || !age || !education) {
+    if (!phone || !city || !gender || !age || !education) {
       alert('Please fill in all the required fields.');
       setButtonLoading(false);
       setShowAuthModal(false);
@@ -574,7 +574,7 @@ const TutorProfile = () => {
                       colorScheme === 'dark' ? COLORS.white : COLORS.dark
                     }
                     value={phone || ''}
-                    editable={false}
+                    onChangeText={e => setPhone(e)}
                   />
                 </View>
 

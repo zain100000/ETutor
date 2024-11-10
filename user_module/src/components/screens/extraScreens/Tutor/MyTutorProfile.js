@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {COLORS, FONTS} from '../../../constants/Constants';
-import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -132,8 +131,8 @@ const MyTutorProfile = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('')}>
-          <Feather
-            name="chevron-left"
+          <Ionicons
+            name="chevron-back"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />

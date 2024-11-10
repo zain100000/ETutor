@@ -10,7 +10,7 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS} from '../constants/Constants';
 import CustomModal from '../utils/modals/CustomModal';
@@ -138,8 +138,8 @@ const ChangePassword = () => {
           },
         ]}>
         <TouchableOpacity onPress={() => navigation.goBack('Home')}>
-          <Feather
-            name="chevron-left"
+          <Ionicons
+            name="chevron-back"
             size={30}
             color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
           />
@@ -193,8 +193,8 @@ const ChangePassword = () => {
             <TouchableOpacity
               style={styles.eyeIconContainer}
               onPress={() => setHidePassword(!hidePassword)}>
-              <Feather
-                name={hidePassword ? 'eye-off' : 'eye'}
+              <Ionicons
+                name={hidePassword ? 'eye-off-outline' : 'eye-outline'}
                 size={25}
                 color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
               />
@@ -234,8 +234,8 @@ const ChangePassword = () => {
             <TouchableOpacity
               style={styles.eyeIconContainer}
               onPress={() => setHidePassword1(!hidePassword1)}>
-              <Feather
-                name={hidePassword1 ? 'eye-off' : 'eye'}
+              <Ionicons
+                name={hidePassword1 ? 'eye-off-outline' : 'eye-outline'}
                 size={25}
                 color={colorScheme === 'dark' ? COLORS.white : COLORS.dark}
               />
