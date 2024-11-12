@@ -556,7 +556,7 @@ const SubjectTutorDetailedProfile = () => {
                   },
                   {
                     icon: 'briefcase-outline',
-                    title: 'Teaching Experience',
+                    title: 'Experience',
                     values: tutorData?.teachingExperience
                       ? [tutorData.teachingExperience]
                       : [],
@@ -620,7 +620,7 @@ const SubjectTutorDetailedProfile = () => {
               <Ionicons
                 name="mail-outline"
                 size={22}
-                color={colorScheme == 'dark' ? COLORS.primary : COLORS.primary}
+                color={colorScheme === 'dark' ? COLORS.primary : COLORS.primary}
               />
               <Text style={[styles.contactButtonText, {color: COLORS.primary}]}>
                 Mail
@@ -635,14 +635,27 @@ const SubjectTutorDetailedProfile = () => {
                     colorScheme === 'dark' ? COLORS.dark : COLORS.dark,
                 },
               ]}
-              onPress={() => Linking.openURL(`sms:${tutorData?.phone}`)}>
+              onPress={() => {
+                const phoneNumber = tutorData?.phone
+                  ? `+${tutorData?.phone}`
+                  : '';
+                console.log('Opening WhatsApp with phone number:', phoneNumber);
+
+                if (phoneNumber) {
+                  Linking.openURL(`whatsapp://send?phone=${phoneNumber}`).catch(
+                    err => console.error('Error opening WhatsApp: ', err),
+                  );
+                } else {
+                  console.error('Invalid phone number');
+                }
+              }}>
               <Ionicons
-                name="chatbubble-outline"
+                name="logo-whatsapp"
                 size={22}
-                color={colorScheme == 'dark' ? COLORS.primary : COLORS.primary}
+                color={colorScheme === 'dark' ? COLORS.primary : COLORS.primary}
               />
               <Text style={[styles.contactButtonText, {color: COLORS.primary}]}>
-                SMS
+                WhatsApp
               </Text>
             </TouchableOpacity>
 
@@ -658,7 +671,7 @@ const SubjectTutorDetailedProfile = () => {
               <Ionicons
                 name="call-outline"
                 size={22}
-                color={colorScheme == 'dark' ? COLORS.primary : COLORS.primary}
+                color={colorScheme === 'dark' ? COLORS.primary : COLORS.primary}
               />
               <Text style={[styles.contactButtonText, {color: COLORS.primary}]}>
                 Call
@@ -925,7 +938,7 @@ const styles = StyleSheet.create({
 
   contactButtonText: {
     marginTop: height * 0.01,
-    fontSize: width * 0.05,
+    fontSize: width * 0.04,
     fontFamily: FONTS.bold,
   },
 });

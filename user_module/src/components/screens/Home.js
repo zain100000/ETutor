@@ -33,6 +33,8 @@ const {width, height} = Dimensions.get('window');
 const Home = () => {
   const [image, setImage] = useState('');
   const [fullName, setFullName] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredTutors, setFilteredTutors] = useState([]);
   const [searchBorderColor, setSearchBorderColor] = useState(COLORS.lightGray);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -72,7 +74,9 @@ const Home = () => {
   );
 
   const renderSubjectCard = ({item}) => (
-    <SubjectCard subjectImage={item.image} subjectName={item.name} />
+    <View style={styles.cardWrapper}>
+      <SubjectCard subjectImage={item.image} subjectName={item.name} />
+    </View>
   );
 
   const subjects = [
@@ -167,7 +171,7 @@ const Home = () => {
             renderItem={renderSubjectCard}
             keyExtractor={item => item.id}
             numColumns={3}
-            contentContainerStyle={styles.subjectCardContainer}
+            contentContainerStyle={styles.subjectCardList}
           />
         </View>
       </ScrollView>
@@ -246,16 +250,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 
-  homeContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  home: {
-    fontFamily: FONTS.semiBold,
-    fontSize: width * 0.05,
-  },
-
   searchContainer: {
     paddingHorizontal: width * 0.03,
     paddingVertical: height * 0.03,
@@ -282,6 +276,18 @@ const styles = StyleSheet.create({
   subjectCardContainer: {
     paddingHorizontal: width * 0.03,
     paddingTop: height * 0.02,
-    gap: width * 0.03,
+  },
+
+  subjectCardList: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  cardWrapper: {
+    width: width * 0.28,
+    margin: width * 0.015,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: height * 0.02,
   },
 });
