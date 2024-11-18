@@ -249,7 +249,7 @@ const Profile = () => {
                 <View style={styles.subCardLeftContainer}>
                   <View style={styles.subCardIconContainer}>
                     <Ionicons
-                      name="heart-outline"
+                      name="chatbox-outline"
                       size={25}
                       style={[
                         styles.subCardIcon,
@@ -270,7 +270,7 @@ const Profile = () => {
                         fontSize: width * 0.045,
                         marginLeft: 10,
                       }}>
-                      Favourites
+                      Inbox
                     </Text>
                   </View>
                 </View>
@@ -278,7 +278,7 @@ const Profile = () => {
                 <View style={styles.subCardRightContainer}>
                   <View style={styles.subCardIconContainer}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('Favourites')}>
+                      onPress={() => navigation.navigate('Inbox')}>
                       <Ionicons
                         name="chevron-forward"
                         size={30}
@@ -1002,6 +1002,13 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
   },
 
+  headerDescriptionText: {
+    color: COLORS.dark,
+    fontSize: width * 0.042,
+    fontFamily: FONTS.medium,
+    left: width * 0.01,
+  },
+
   subHeaderTextContainer: {
     marginLeft: width * 0.03,
     marginTop: height * 0.02,
@@ -1011,13 +1018,6 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
     color: COLORS.dark,
     fontFamily: FONTS.semiBold,
-  },
-
-  headerDescriptionText: {
-    color: COLORS.dark,
-    fontSize: width * 0.042,
-    fontFamily: FONTS.medium,
-    left: width * 0.01,
   },
 
   cardContainer: {

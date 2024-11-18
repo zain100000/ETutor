@@ -18,6 +18,7 @@ import {COLORS, FONTS} from '../../constants/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import imgPlaceHolder from '../../../assets/placeholders/default-avatar.png';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const {width, height} = Dimensions.get('window');
 
@@ -88,6 +89,13 @@ const SubjectTutorDetailedProfile = () => {
         .filter(subjectKey => tutorData.tuitionSubjects[subjectKey])
         .map(subjectKey => subjectsNames[subjectKey])
     : [];
+
+  const handleChatBox = () => {
+    const studentId = auth().currentUser.uid;
+    console.log('Student Id:', studentId);
+    console.log('Tutor Id:', tutorId);
+    navigation.navigate('Chat_Box', {tutorId, studentId});
+  };
 
   return (
     <SafeAreaView
@@ -609,21 +617,21 @@ const SubjectTutorDetailedProfile = () => {
 
           <View style={styles.contactOptionsContainer}>
             <TouchableOpacity
+              onPress={tutorId => handleChatBox(tutorId)}
               style={[
                 styles.contactButton,
                 {
                   backgroundColor:
                     colorScheme === 'dark' ? COLORS.dark : COLORS.dark,
                 },
-              ]}
-              onPress={() => Linking.openURL(`mailto:${tutorData?.email}`)}>
+              ]}>
               <Ionicons
-                name="mail-outline"
+                name="chatbubble-outline"
                 size={22}
                 color={colorScheme === 'dark' ? COLORS.primary : COLORS.primary}
               />
               <Text style={[styles.contactButtonText, {color: COLORS.primary}]}>
-                Mail
+                Chat
               </Text>
             </TouchableOpacity>
 
@@ -922,6 +930,20 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
     fontFamily: FONTS.semiBold,
     textTransform: 'capitalize',
+  },
+
+  ratingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: height * 0.02,
+    paddingHorizontal: width * 0.05,
+  },
+
+  starsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: width * 0.05,
   },
 
   contactOptionsContainer: {

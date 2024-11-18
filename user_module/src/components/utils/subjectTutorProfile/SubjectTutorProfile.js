@@ -113,15 +113,6 @@ const SubjectTutorProfile = () => {
           </Text>
           <View style={styles.tutorDetailContainer}>
             <View style={styles.subDetailContainer}>
-              <Text
-                style={[
-                  styles.tutorText,
-                  {
-                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  },
-                ]}>
-                Syllabus:
-              </Text>
               <View style={styles.tutorSubDetailContainer}>
                 <Text
                   style={[
@@ -152,15 +143,6 @@ const SubjectTutorProfile = () => {
             </View>
 
             <View style={styles.subDetailContainer}>
-              <Text
-                style={[
-                  styles.tutorText,
-                  {
-                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  },
-                ]}>
-                Tuition:
-              </Text>
               <View style={styles.tutorSubDetailContainer}>
                 <Text
                   style={[
@@ -193,15 +175,6 @@ const SubjectTutorProfile = () => {
             </View>
 
             <View style={styles.subDetailContainer}>
-              <Text
-                style={[
-                  styles.tutorText,
-                  {
-                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  },
-                ]}>
-                Grades:
-              </Text>
               <View style={styles.tutorSubDetailContainer}>
                 <Text
                   style={[
@@ -234,15 +207,6 @@ const SubjectTutorProfile = () => {
             </View>
 
             <View style={styles.subDetailContainer}>
-              <Text
-                style={[
-                  styles.tutorText,
-                  {
-                    color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
-                  },
-                ]}>
-                City:
-              </Text>
               <View style={styles.tutorSubDetailContainer}>
                 <Text
                   style={[
@@ -388,11 +352,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: width * 0.1,
+    marginLeft: width * 0.01,
   },
 
   tutorImage: {
-    width: width * 0.35,
-    height: height * 0.2,
+    width: width * 0.25,
+    height: height * 0.15,
     marginLeft: width * 0.02,
   },
 
@@ -400,10 +365,11 @@ const styles = StyleSheet.create({
     fontSize: width * 0.05,
     fontFamily: FONTS.bold,
     marginBottom: height * 0.02,
+    left: width * 0.016,
   },
 
   tutorDetailContainer: {
-    marginLeft: -width * 0.05,
+    marginLeft: width * 0.01,
   },
 
   tutorSubDetailContainer: {
@@ -418,13 +384,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: width * 0.01,
-  },
-
-  tutorText: {
-    fontSize: width * 0.04,
-    fontFamily: FONTS.semiBold,
-    marginRight: width * 0.02,
-    width: width * 0.25,
   },
 
   tutorSubText: {

@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
@@ -35,8 +36,9 @@ const Home = () => {
   const [fullName, setFullName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTutors, setFilteredTutors] = useState([]);
+  const [showTutors, setShowTutors] = useState(false);
   const [searchBorderColor, setSearchBorderColor] = useState(COLORS.lightGray);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
   const authInstance = auth();
@@ -71,6 +73,234 @@ const Home = () => {
 
       loadData();
     }, []),
+  );
+
+  const handleSearch = async text => {
+    setSearchQuery(text);
+
+    if (text.trim() === '') {
+      // When search text is cleared, show the subject cards again
+      setShowTutors(false);
+      setFilteredTutors([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    const query = text.toLowerCase();
+
+    try {
+      const snapshot = await firestore().collection('tutor_profile').get();
+      const tutors = snapshot.docs
+        .map(doc => ({id: doc.id, ...doc.data()}))
+        .filter(tutor => {
+          const cityMatch = tutor.city?.toLowerCase().includes(query);
+          const subjectMatch =
+            tutor.tuitionSubjects &&
+            Object.keys(tutor.tuitionSubjects).some(subject =>
+              subject.toLowerCase().includes(query),
+            );
+          return cityMatch || subjectMatch;
+        });
+
+      // If no tutors found, display "No Tutor Found!"
+      setFilteredTutors(tutors);
+      setShowTutors(tutors.length > 0); // If tutors are found, show the tutor cards
+    } catch (error) {
+      console.error('Error fetching tutors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderTutorCard = ({item}) => (
+    <View style={styles.cardWrapper}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Subject_Tutor_Detailed_Profile', {
+            tutorId: item.tutorId,
+          });
+        }}>
+        <View
+          style={[
+            styles.tutorCard,
+            {
+              backgroundColor:
+                colorScheme === 'dark' ? COLORS.darkColor : COLORS.white,
+            },
+          ]}>
+          <Image
+            source={
+              item.profileImage && typeof item.profileImage === 'string'
+                ? {uri: item.profileImage}
+                : imgPlaceHolder
+            }
+            style={styles.tutorImage}
+          />
+          <View style={styles.tutorInfoContainer}>
+            <Text
+              style={[
+                styles.tutorName,
+                {
+                  color: colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                },
+              ]}>
+              {item.fullName}
+            </Text>
+            <View style={styles.tutorDetailContainer}>
+              <View style={styles.subDetailContainer}>
+                <Text
+                  style={[
+                    styles.tutorText,
+                    {
+                      color:
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    },
+                  ]}>
+                  Syllabus:
+                </Text>
+                <View style={styles.tutorSubDetailContainer}>
+                  <Text
+                    style={[
+                      styles.tutorSubText,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    {Object.keys(item.syllabusType).find(
+                      key => item.syllabusType[key] === true,
+                    )}
+                  </Text>
+
+                  <Text
+                    style={[
+                      styles.tutorSubText,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    {Object.keys(item.boardRegions).find(
+                      key => item.boardRegions[key] === true,
+                    )}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.subDetailContainer}>
+                <Text
+                  style={[
+                    styles.tutorText,
+                    {
+                      color:
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    },
+                  ]}>
+                  Tuition:
+                </Text>
+                <View style={styles.tutorSubDetailContainer}>
+                  <Text
+                    style={[
+                      styles.tutorSubText,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    {Object.keys(item.tuitionType)
+                      .filter(key => item.tuitionType[key] === true)
+                      .join(', ')}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.subDetailContainer}>
+                <View style={styles.tutorSubDetailContainer}>
+                  <Text
+                    style={[
+                      styles.tutorSubText,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    {item.teachingExperience}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.subDetailContainer}>
+                <Text
+                  style={[
+                    styles.tutorText,
+                    {
+                      color:
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    },
+                  ]}>
+                  Grades:
+                </Text>
+                <View style={styles.tutorSubDetailContainer}>
+                  <Text
+                    style={[
+                      styles.tutorSubText,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    {Object.keys(item.tuitionGrades)
+                      .filter(key => item.tuitionGrades[key] === true)
+                      .join(', ')}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.subDetailContainer}>
+                <View style={styles.tutorSubDetailContainer}>
+                  <Text
+                    style={[
+                      styles.tutorSubText,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    {item.tuitionFee}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.subDetailContainer}>
+                <Text
+                  style={[
+                    styles.tutorText,
+                    {
+                      color:
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    },
+                  ]}>
+                  City:
+                </Text>
+                <View style={styles.tutorSubDetailContainer}>
+                  <Text
+                    style={[
+                      styles.tutorSubText,
+                      {
+                        color:
+                          colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                      },
+                    ]}>
+                    {item.city}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 
   const renderSubjectCard = ({item}) => (
@@ -155,24 +385,62 @@ const Home = () => {
                 styles.searchInputField,
                 {color: colorScheme === 'dark' ? COLORS.white : COLORS.dark},
               ]}
-              placeholder="Search!"
+              placeholder="Search by city or subject"
               placeholderTextColor={
                 colorScheme === 'dark' ? COLORS.gray : COLORS.lightGray
               }
               onFocus={() => setSearchBorderColor(COLORS.primary)}
               onBlur={() => setSearchBorderColor(COLORS.lightGray)}
+              onChangeText={handleSearch}
             />
           </View>
         </View>
 
         <View style={styles.subjectCardContainer}>
-          <FlatList
-            data={subjects}
-            renderItem={renderSubjectCard}
-            keyExtractor={item => item.id}
-            numColumns={3}
-            contentContainerStyle={styles.subjectCardList}
-          />
+          {loading ? (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator
+                size={35}
+                color={colorScheme === 'dark' ? COLORS.white : COLORS.primary}
+              />
+            </View>
+          ) : (
+            <>
+              {showTutors ? (
+                <FlatList
+                  data={filteredTutors}
+                  renderItem={renderTutorCard}
+                  keyExtractor={item => item.id}
+                  numColumns={3}
+                  contentContainerStyle={styles.subjectCardList}
+                  ListEmptyComponent={null}
+                />
+              ) : filteredTutors.length === 0 && searchQuery.trim() !== '' ? (
+                <View style={styles.noTutorProfileContainer}>
+                  <Text
+                    style={[
+                      styles.noTutorProfileText,
+                      {
+                        color:
+                          colorScheme === 'dark'
+                            ? COLORS.white
+                            : COLORS.darkColor,
+                      },
+                    ]}>
+                    No Tutor Found!
+                  </Text>
+                </View>
+              ) : (
+                <FlatList
+                  data={subjects}
+                  renderItem={renderSubjectCard}
+                  keyExtractor={item => item.id}
+                  numColumns={3}
+                  contentContainerStyle={styles.subjectCardList}
+                />
+              )}
+            </>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -289,5 +557,77 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: height * 0.02,
+  },
+
+  tutorCard: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: width * 0.1,
+    marginLeft: width * 0.24,
+  },
+
+  tutorImage: {
+    width: width * 0.35,
+    height: height * 0.2,
+    marginLeft: width * 0.02,
+  },
+
+  tutorName: {
+    fontSize: width * 0.05,
+    fontFamily: FONTS.bold,
+    marginBottom: height * 0.02,
+    right: width * 0.05,
+  },
+
+  tutorDetailContainer: {
+    marginLeft: -width * 0.05,
+  },
+
+  tutorSubDetailContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    width: width * 0.5,
+    gap: width * 0.01,
+  },
+
+  subDetailContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: width * 0.01,
+  },
+
+  tutorText: {
+    fontSize: width * 0.04,
+    fontFamily: FONTS.semiBold,
+    marginRight: width * 0.02,
+    width: width * 0.25,
+  },
+
+  tutorSubText: {
+    fontSize: width * 0.04,
+    fontFamily: FONTS.semiBold,
+    textTransform: 'capitalize',
+  },
+
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: height * 0.55,
+  },
+
+  noTutorProfileContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: height * 0.55,
+  },
+
+  noTutorProfileText: {
+    fontSize: width * 0.05,
+    fontFamily: FONTS.semiBold,
+    textAlign: 'center',
   },
 });

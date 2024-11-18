@@ -20,6 +20,8 @@ import Profile from './src/components/screens/Profile';
 import UpdateTutorProfile from './src/components/screens/extraScreens/Tutor/UpdateTutorProfile';
 import SubjectTutorProfile from './src/components/utils/subjectTutorProfile/SubjectTutorProfile';
 import SubjectTutorDetailedProfile from './src/components/utils/subjectTutorProfile/SubjectTutorDetailedProfile';
+import ChatBox from './src/components/utils/chatbox/ChatBox';
+import Inbox from './src/components/utils/chatbox/Inbox';
 
 const Stack = createNativeStackNavigator();
 
@@ -137,6 +139,19 @@ const App = () => {
             />
           )}
         </Stack.Screen>
+
+        <Stack.Screen name="Chat_Box">
+          {props => (
+            <ChatBox {...props} setStatusBarColor={setStatusBarColor} />
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="Inbox">
+          {props => (
+            <Inbox {...props} setStatusBarColor={setStatusBarColor} />
+          )}
+        </Stack.Screen>
+
       </Stack.Navigator>
     </NavigationContainer>
   );
