@@ -104,8 +104,8 @@ const Inbox = () => {
     }, [fetchChats]),
   );
 
-  const handleNavigateToChatBox = (chatId, otherParticipantId) => {
-    navigation.navigate('Chat_Box', {chatId, otherParticipantId});
+  const handleNavigateToChatBox = (chatId, tutorId) => {
+    navigation.navigate('Chat_Box', {chatId, tutorId});
   };
 
   const renderChatItem = ({item}) => {

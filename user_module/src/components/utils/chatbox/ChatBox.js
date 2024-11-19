@@ -28,9 +28,9 @@ const {width, height} = Dimensions.get('window');
 
 const ChatBox = () => {
   const route = useRoute();
-  const {chatId, otherParticipantId} = route.params;
+  const {chatId, tutorId} = route.params;
   const [studentId, setStudentId] = useState(auth().currentUser?.uid);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
   const [fullName, setFullName] = useState('');
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -43,11 +43,12 @@ const ChatBox = () => {
 
   const fetchParticipantProfile = async () => {
     try {
+      console.log('Fetching profile for participant', tutorId); // Debug log
       let participantData;
 
       const studentDoc = await firestore()
         .collection('app_users')
-        .doc(otherParticipantId)
+        .doc(tutorId)
         .get();
 
       if (studentDoc.exists) {
@@ -55,7 +56,7 @@ const ChatBox = () => {
       } else {
         const tutorDoc = await firestore()
           .collection('tutor_profile')
-          .doc(otherParticipantId)
+          .doc(tutorId)
           .get();
 
         if (tutorDoc.exists) {
@@ -83,7 +84,7 @@ const ChatBox = () => {
           const chatQuery = await firestore()
             .collection('chats')
             .where('participants.studentId', '==', studentId)
-            .where('participants.tutorId', '==', otherParticipantId)
+            .where('participants.tutorId', '==', tutorId)
             .get();
 
           if (!chatQuery.empty) {
@@ -93,7 +94,7 @@ const ChatBox = () => {
           } else {
             const newChatRef = firestore().collection('chats').doc();
             await newChatRef.set({
-              participants: {studentId, tutorId: otherParticipantId},
+              participants: {studentId, tutorId: tutorId},
               messages: [],
               createdAt: firestore.FieldValue.serverTimestamp(),
             });
@@ -106,10 +107,10 @@ const ChatBox = () => {
       }
     };
 
-    if (studentId && otherParticipantId) {
+    if (studentId && tutorId) {
       checkForChat();
     }
-  }, [studentId, otherParticipantId, chatIdState]);
+  }, [studentId, tutorId, chatIdState]);
 
   useEffect(() => {
     if (chatIdState) {
@@ -176,7 +177,7 @@ const ChatBox = () => {
   useFocusEffect(
     useCallback(() => {
       fetchParticipantProfile();
-    }, [otherParticipantId]),
+    }, [tutorId]),
   );
 
   const sendMessage = async () => {
@@ -191,6 +192,17 @@ const ChatBox = () => {
     }
 
     try {
+      // Check if chatIdState exists
+      if (!chatIdState) {
+        const newChatRef = firestore().collection('chats').doc();
+        await newChatRef.set({
+          participants: {studentId, tutorId: tutorId},
+          messages: [],
+          createdAt: firestore.FieldValue.serverTimestamp(),
+        });
+        setChatIdState(newChatRef.id); // Update the chatIdState with the new chatId
+      }
+
       const messageData = {
         senderId: currentUserId,
         message: newMessage.trim(),
