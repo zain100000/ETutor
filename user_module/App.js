@@ -147,11 +147,8 @@ const App = () => {
         </Stack.Screen>
 
         <Stack.Screen name="Inbox">
-          {props => (
-            <Inbox {...props} setStatusBarColor={setStatusBarColor} />
-          )}
+          {props => <Inbox {...props} setStatusBarColor={setStatusBarColor} />}
         </Stack.Screen>
-
       </Stack.Navigator>
     </NavigationContainer>
   );
