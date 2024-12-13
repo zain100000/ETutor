@@ -19,6 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import imgPlaceHolder from '../../../assets/placeholders/default-avatar.png';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import TutorRatingModal from '../modals/TutorRatingModal';
 
 const {width, height} = Dimensions.get('window');
 
@@ -27,6 +28,7 @@ const SubjectTutorDetailedProfile = () => {
   const {tutorId} = route.params;
   const [tutorData, setTutorData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [ratingModalVisible, setRatingModalVisible] = useState(false);
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
 
@@ -613,6 +615,21 @@ const SubjectTutorDetailedProfile = () => {
                 )}
               />
             </View>
+
+            <View style={styles.ratingContainer}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#007bff',
+                  padding: 10,
+                  borderRadius: 5,
+                  marginTop: 20,
+                }}
+                onPress={() => setRatingModalVisible(true)}>
+                <Text style={{color: 'white', textAlign: 'center'}}>
+                  Rate this Tutor
+                </Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
 
           <View style={styles.contactOptionsContainer}>
@@ -688,6 +705,12 @@ const SubjectTutorDetailedProfile = () => {
           </View>
         </>
       )}
+
+      <TutorRatingModal
+        visible={ratingModalVisible}
+        onClose={() => setRatingModalVisible(false)}
+        tutorId={tutorId}
+      />
     </SafeAreaView>
   );
 };

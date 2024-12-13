@@ -220,6 +220,21 @@ const SubjectTutorProfile = () => {
                 </Text>
               </View>
             </View>
+
+            <View style={styles.subDetailContainer}>
+              <View style={styles.tutorSubDetailContainer}>
+                <Text
+                  style={[
+                    styles.tutorSubText,
+                    {
+                      color:
+                        colorScheme === 'dark' ? COLORS.white : COLORS.dark,
+                    },
+                  ]}>
+                  {item.ratings}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
       </View>
